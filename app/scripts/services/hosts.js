@@ -16,7 +16,7 @@ angular.module('webappApp')
     };
 
     this.accessible = function(hostname, callback) {
-      $http.get('http://ubuntutres:3000?command=accessibleHost&hostname=' + hostname, function(error, data) {
+      $http.get('http://ubuntutres:3000?command=accessibleHost&params=[' + hostname + ']', function(error, data) {
         if (!error) {
           callback(null, data);
         } else {

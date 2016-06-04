@@ -13,7 +13,7 @@ var result = '';
 app.use(express.static('dist'));
 
 //Executa scripts que retornam apenas 1 para sucesso ou 0 para erro
-app.get('/script/', function(req, res) {
+app.get('/script', function(req, res) {
   if (!req.query.command) {
     res.send('Você precisa informar um comando!');
     return;
@@ -22,13 +22,18 @@ app.get('/script/', function(req, res) {
     res.send('Comando invalido ou inexistente');
     return;
   }
-  shelljs.exec('sh/scripts/'+req.query.command+'.sh '+req.query.hostname, function(code) {
+  var params = '';
+  if (req.query.params) {
+    params = JSON.parse(req.query.params).toString().replace(/\,/ig, ' ');
+  }
+  shelljs.exec('sh/scripts/'+req.query.command+'.sh '+params, function(code) {
+    console.log(code);
     res.send(code);
   });
 });
 
 //executa .sh que realizam operações e retornam a saída preparada do console
-app.get('/shell/', function(req, res) {
+app.get('/shell', function(req, res) {
   if (!req.query.command) {
     res.send('Você precisa informar um comando!');
     return;

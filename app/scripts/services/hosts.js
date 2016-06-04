@@ -9,6 +9,11 @@
  */
 angular.module('webappApp')
   .service('Hosts', function ($http) {
+    var service = this;
+
+    service.model = {
+      hosts: []
+    };
 
     this.accessible = function(hostname, callback) {
       $http.get('http://ubuntutres:3000?command=accessibleHost&hostname=' + hostname, function(error, data) {
@@ -17,6 +22,12 @@ angular.module('webappApp')
         } else {
           callback(error);
         }
+      });
+    };
+
+    this.addHost = function(hostname, callback) {
+      service.accessible(hostname, function(error, data) {
+        callback(error, data);
       });
     };
 

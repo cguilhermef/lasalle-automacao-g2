@@ -12,6 +12,22 @@ var result = '';
 
 app.use(express.static('dist'));
 
+//Executa scripts que retornam apenas 1 para sucesso ou 0 para erro
+app.get('/script/', function(req, res) {
+  if (!req.query.command) {
+    res.send('Você precisa informar um comando!');
+    return;
+  }
+  if (availableCommands.indexOf(req.query.command) === -1) {
+    res.send('Comando invalido ou inexistente');
+    return;
+  }
+  shelljs.exec('sh/scripts/'+req.query.command+'.sh', function(code) {
+    res.send(code);
+  });
+});
+
+//executa .sh que realizam operações e retornam a saída preparada do console
 app.get('/shell/', function(req, res) {
   if (!req.query.command) {
     res.send('Você precisa informar um comando!');
@@ -21,8 +37,8 @@ app.get('/shell/', function(req, res) {
     res.send('Comando invalido ou inexistente');
     return;
   }
-  shelljs.exec('bashes/'+req.query.command+'.sh');
-  result = '<pre>' + fs.readFileSync('bashes/'+req.query.command+'.txt', "utf8") + '</pre>';
+  shelljs.exec('sh/bashes/'+req.query.command+'.sh');
+  result = '<pre>' + fs.readFileSync('sh/bashes/'+req.query.command+'.txt', "utf8") + '</pre>';
   res.send(result);
 });
 

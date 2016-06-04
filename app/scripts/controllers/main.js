@@ -18,8 +18,8 @@ angular.module('webappApp')
       $scope.model.hosts = [];
     };
 
-    $scope.addHost = function(hostname) {
-      Hosts.addHost(hostname, function(error, data) {
+    $scope.addHost = function() {
+      Hosts.addHost($scope.model.host.hostname, function(error, data) {
         console.log(error);
         console.log(data);
         if (!error) {{

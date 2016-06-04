@@ -57,7 +57,25 @@
     </div>
 
     <div class="container">
-    <div ng-view=""></div>
+      <div class="row">
+        <div
+          ng-controller="SidebarCtrl"
+          class="col-xs-12 col-md-3">
+          <ul class="nav nav-pills nav-stacked">
+            <li
+              ng-class="{active: rota === '/' }">
+              <a ng-href="#/home">Home</a>
+            </li>
+            <li
+              ng-class="{active: rota === '/usuario' }">
+              <a ng-href="#/usuario">Usuários</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-xs-12 col-md-9">
+          <div ng-view=""></div>
+        </div>
+      </div>
     </div>
 
     <div class="footer">
@@ -96,6 +114,9 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
+        <script src="scripts/services/usuario.js"></script>
+        <script src="scripts/controllers/usuario.js"></script>
+        <script src="scripts/controllers/sidebar.js"></script>
         <!-- endbuild -->
 </body>
 </html>

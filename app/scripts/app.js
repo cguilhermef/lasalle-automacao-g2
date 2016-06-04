@@ -29,6 +29,11 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
+      .when('/usuario', {
+        templateUrl: 'views/usuario.html',
+        controller: 'UsuarioCtrl',
+        controllerAs: 'usuario'
+      })
       .otherwise({
         redirectTo: '/'
       });

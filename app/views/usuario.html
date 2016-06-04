@@ -1,0 +1,37 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Usuários</h2>
+  </div>
+  <div class="panel-body">
+    <form name="frmUsuarioFind">
+      <div class="row">
+        <div class="col-xs-12 col-md-4">
+          <div class="form-group">
+            <label for="" class="form-control-label">IP do servidor</label>
+            <!-- <input type="text" ng-model="filtro.ipServidor" class="form-control"> -->
+            <select name="" ng-model="filtro.ipServidor" id="" class="form-control">
+              <option value="">Selecione</option>
+              <option value="1">192.168.1.20</option>
+              <option value="2">192.168.1.21</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+          <div class="form-group">
+            <label for="" class="form-control-label">Nome do usuario</label>
+            <input type="text" ng-model="filtro.nomeUsuario" class="form-control">
+          </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+          <label for=""></label>
+          <button
+            style="margin-top: 24px;"
+            ng-click="buscarUsuario()"
+            class="btn btn-primary">
+            Buscar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,4 +1,49 @@
-<div class="jumbotron">
-  <h2>LA - G2</h2>
-  <p>Escolha uma das opções ao lado para iniciar o uso da aplicação.</p>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Configuração inicial</h2>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-12">
+        <h4>Inserir hosts</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-md-4">
+        <div class="form-group">
+          <label class="form-control-label">Nome do host</label>
+          <input type="text" class="form-control">
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-4">
+        <button class="btn btn-primary without-label">
+          <span class="fa fa-plus"></span> Adicionar
+        </button>
+      </div>
+    </div>
+    <hr>
+    <h4>Lista de hosts</h4>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Hostname</th>
+          <th>Ip atual</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="host in model.hosts">
+          <td>{{host.hostname}}</td>
+          <td>{{host.ip}}</td>
+          <td>{{host.status}}</td>
+        </tr>
+        <tr ng-hide="model.hosts.length">
+          <td colspan="3">
+            <div class="alert alert-info -m-b">Nenhum host informado.</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
 </div>

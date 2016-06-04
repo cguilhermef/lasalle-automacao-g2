@@ -5,7 +5,8 @@ var fs = require('fs');
 var app = express();
 var availableCommands = [
   'show_top',
-  'ls_root'
+  'ls_root',
+  'accessibleHost'
 ];
 var result = '';
 

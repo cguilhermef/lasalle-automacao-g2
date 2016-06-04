@@ -8,7 +8,7 @@
  * Controller of the webappApp
  */
 angular.module('webappApp')
-  .controller('UsuarioCtrl', function (Usuario, $scope, $location) {
+  .controller('UsuarioCtrl', function (Usuario, $scope) {
 
     $scope.init = function() {
       if (!$scope.model) { $scope.model = {}; }

@@ -9,7 +9,7 @@
  */
 angular.module('webappApp')
   .controller('SidebarCtrl', function ($rootScope, $scope, $location) {
-    $rootScope.$on('$routeChangeStart', function(event, next) {
+    $rootScope.$on('$routeChangeStart', function() {
       $scope.rota = $location.path();
     });
   });

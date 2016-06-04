@@ -8,10 +8,15 @@
  * Controller of the webappApp
  */
 angular.module('webappApp')
-  .controller('MainCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+  .controller('MainCtrl', function ($scope) {
+    $scope.init = function() {
+      if (!$scope.model) { $scope.model = {}; }
+
+      $scope.model.host = {
+        hostname: ''
+      };
+      $scope.model.hosts = [];
+    };
+
+    $scope.init();
   });

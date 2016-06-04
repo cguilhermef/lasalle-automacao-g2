@@ -22,7 +22,7 @@ app.get('/script/', function(req, res) {
     res.send('Comando invalido ou inexistente');
     return;
   }
-  shelljs.exec('sh/scripts/'+req.query.command+'.sh', function(code) {
+  shelljs.exec('sh/scripts/'+req.query.command+'.sh '+req.query.hostname, function(code) {
     res.send(code);
   });
 });

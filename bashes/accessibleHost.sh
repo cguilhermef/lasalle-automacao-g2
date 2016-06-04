@@ -1,5 +1,13 @@
 #!/bin/bash
 
-ping_pesq=`ping -q -c1 $1 | grep received | cut -d " " -f 4`
+wanted=`echo $1 | tr '[:upper:]' '[:lower:]'`
 
-return 10
+nmap -sP 10.0.0.* | grep "report for" | cut -d\  -f5 | while read ip
+do
+  finded=`nmblookup -A $ip | awk NR==2 | awk '{ print $1; }' | tr [:upper:] [:lower:]`
+  if [ $finded == $wanted ]
+  then
+    exit 1
+  fi
+done
+

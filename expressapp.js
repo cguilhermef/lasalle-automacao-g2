@@ -1,34 +1,33 @@
 var express = require('/usr/local/lib/node_modules/express');
 var shelljs = require('/usr/local/lib/node_modules/shelljs');
 var fs = require('fs');
+var bodyParser = require('body-parser');
 
 var app = express();
+
+app.use(express.static('dist'));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
 var availableCommands = [
   'show_top',
   'ls_root',
   'accessibleHost'
 ];
+
 var result = '';
-
-app.use(express.static('dist'));
-
+var params = '';
 //Executa scripts que retornam apenas 1 para sucesso ou 0 para erro
-app.get('/script', function(req, res) {
-  if (!req.query.command) {
-    res.send('Você precisa informar um comando!');
-    return;
+app.post('/script', function(req, res) {
+//  console.log(req.body);
+  if (req.body.params) {
+    params = req.body.params.toString().replace(/\,/ig,' ');
+  } else {
+    params = '';
   }
-  if (availableCommands.indexOf(req.query.command) === -1) {
-    res.send('Comando invalido ou inexistente');
-    return;
-  }
-  var params = '';
-  if (req.query.params) {
-    params = JSON.parse(req.query.params).toString().replace(/\,/ig, ' ');
-  }
-  shelljs.exec('sh/scripts/'+req.query.command+'.sh '+params, function(code) {
-    console.log(code);
-    res.send(code);
+
+  shelljs.exec('sh/scripts/'+req.body.command+'.sh '+params, function(code) {
+    res.send({exit: code});
   });
 });
 

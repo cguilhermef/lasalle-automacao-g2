@@ -8,7 +8,7 @@
  * Controller of the webappApp
  */
 angular.module('webappApp')
-  .controller('MainCtrl', function ($scope, Hosts) {
+  .controller('MainCtrl', function ($rootScope, $scope, Hosts) {
     $scope.init = function() {
       if (!$scope.model) { $scope.model = {}; }
 
@@ -16,14 +16,18 @@ angular.module('webappApp')
         hostname: ''
       };
       $scope.model.hosts = [];
+      $scope.model.addingHost = false;
     };
 
-    $scope.addHost = function() {
+    $scope.addHost = function($event) {
+      $event.delegateTarget.toggleLoading();
+      $scope.model.addingHost = true;
       Hosts.addHost($scope.model.host.hostname, function(error, data) {
-        console.log(error);
-        console.log(data);
+        $event.delegateTarget.toggleLoading();
+        $scope.model.addingHost = false;
         if (!error) {{
-          $scope.model.hosts.push(data);
+          console.log(data);
+          // $scope.model.hosts.push(data);
         }}
       });
     };

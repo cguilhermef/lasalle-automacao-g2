@@ -15,7 +15,7 @@ var availableCommands = [
   'accessibleHost'
 ];
 
-var result = '';
+var result = {};
 var params = '';
 //Executa scripts que retornam apenas 1 para sucesso ou 0 para erro
 app.post('/script', function(req, res) {
@@ -27,7 +27,13 @@ app.post('/script', function(req, res) {
   }
 
   shelljs.exec('sh/scripts/'+req.body.command+'.sh '+params, function(code) {
-    res.send({exit: code});
+    if (code === 'txt') {
+      result.json = fs.readFileSync('sh/scripts/'+req.body.command+'.txt', "utf8");
+      result.json = JSON.parse(result.json);
+    } else {
+      result.exit = code;
+    }
+    res.send(result);
   });
 });
 

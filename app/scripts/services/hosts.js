@@ -25,7 +25,7 @@ angular.module('webappApp')
         } else {
           callback(error);
         }
-      }, function(error, data) {
+      }, function(error) {
         callback(error);
       });
     };

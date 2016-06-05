@@ -13,14 +13,17 @@
         <div class="form-group">
           <label class="form-control-label">Nome do host</label>
           <input
+            ng-disabled="model.addingHost"
             ng-model="model.host.hostname"
             type="text"
             class="form-control">
         </div>
       </div>
-      <div class="col-xs-12 col-md-4">
+      <div class="col-xs-12 col-md-2">
         <button
-          ng-click="addHost()" 
+          ng-click="addHost($event)"
+          loader
+          loader-icon="fa-spinner"
           class="btn btn-primary without-label">
           <span class="fa fa-plus"></span> Adicionar
         </button>

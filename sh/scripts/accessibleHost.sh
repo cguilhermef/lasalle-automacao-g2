@@ -1,4 +1,10 @@
 #!/bin/bash
+path_scripts=./sh/scripts/
+
+if [ -e ${path_scripts}accessibleHost.txt ]
+then
+  rm ${path_scripts}accessibleHost.txt 
+fi
 
 wanted=`echo $1 | tr '[:upper:]' '[:lower:]'`
 
@@ -7,7 +13,12 @@ do
   finded=`nmblookup -A $ip | awk NR==2 | awk '{ print $1; }' | tr [:upper:] [:lower:]`
   if [ $finded == $wanted ]
   then
-    exit 1
+    echo -e "{\"ip\":\""$ip"\", \"status\":\"up\"}" > ${path_scripts}accessibleHost.txt
   fi
 done
 
+if [ ! -e ${path_scripts}accessibleHost.txt ]
+then
+ echo -e "{\"ip\":\"null\", \"status\":\"down\"}" > ${path_scripts}accessibleHost.txt
+fi
+exit 1

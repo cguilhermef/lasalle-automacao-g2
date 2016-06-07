@@ -15,23 +15,19 @@ angular.module('webappApp')
       hosts: []
     };
 
-    this.accessible = function(hostname, callback) {
+    this.statusIp = function(ipAddress, callback) {
       $http.post('http://ubuntutres:3000/script', {
-        command: 'accessibleHost',
-        params: [hostname]
-      }).then(function(error, data){
-        if (!error) {
-          callback(null, data);
-        } else {
-          callback(error);
-        }
+        command: 'ipStatus',
+        params: [ipAddress]
+      }).then(function(response){
+          callback(null, response.data);
       }, function(error) {
         callback(error);
       });
     };
 
-    this.addHost = function(hostname, callback) {
-      service.accessible(hostname, function(error, data) {
+    this.addHost = function(ipAddress, callback) {
+      service.statusIp(ipAddress, function(error, data) {
         callback(error, data);
       });
     };

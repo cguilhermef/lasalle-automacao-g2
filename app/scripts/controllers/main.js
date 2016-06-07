@@ -27,7 +27,7 @@ angular.module('webappApp')
         $scope.model.addingHost = false;
         if (!error) {{
           console.log(data);
-          // $scope.model.hosts.push(data);
+          $scope.model.hosts.push(data.content);
         }}
       });
     };

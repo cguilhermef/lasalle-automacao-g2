@@ -15,7 +15,8 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'ngToast'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -37,4 +38,11 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-  });
+  })
+  .config(['ngToastProvider', function(ngToast) {
+    ngToast.configure({
+      verticalPosition: 'top',
+      horizontalPosition: 'center',
+      maxNumber: 3
+    });
+  }]);

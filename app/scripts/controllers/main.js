@@ -8,7 +8,7 @@
  * Controller of the webappApp
  */
 angular.module('webappApp')
-  .controller('MainCtrl', function ($rootScope, $scope, Hosts) {
+  .controller('MainCtrl', function ($rootScope, $scope, Hosts, ngToast) {
     $scope.init = function() {
       if (!$scope.model) { $scope.model = {}; }
 
@@ -26,7 +26,14 @@ angular.module('webappApp')
         $event.delegateTarget.toggleLoading();
         $scope.model.addingHost = false;
         if (!error) {{
-          console.log(data);
+          if (data.content.lost === 100) {
+            ngToast.clean();
+            ngToast.create({
+              className: 'warning',
+              content: 'Este host parece estar indisponível',
+              timeout: 5000
+            });
+          }
           $scope.model.hosts.push(data.content);
         }}
       });

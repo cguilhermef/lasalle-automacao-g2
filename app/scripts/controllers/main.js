@@ -22,6 +22,10 @@ angular.module('webappApp')
     $scope.addHost = function($event) {
       $event.delegateTarget.toggleLoading();
       $scope.model.addingHost = true;
+      ngToast.create({
+        className: 'success',
+        content: '<span class="fa fa-check"></span> Adicionado com sucesso!'
+      });
       Hosts.addHost($scope.model.host.hostname, function(error, data) {
         $event.delegateTarget.toggleLoading();
         $scope.model.addingHost = false;

@@ -16,7 +16,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ngToast'
+    'ngToast',
+    'ngStorage'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -45,4 +46,8 @@ angular
       horizontalPosition: 'center',
       maxNumber: 3
     });
-  }]);
+  }]).run(function($rootScope) {
+    $rootScope.config = {
+      SCRIPTS_URL: 'http://ubuntutres:3000/script'
+    };
+  });

@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col-xs-12 col-md-4">
         <div class="form-group">
-          <label class="form-control-label">Nome do host</label>
+          <label class="form-control-label">IP do host</label>
           <input
             ng-disabled="model.addingHost"
             ng-model="model.host.hostname"
@@ -24,6 +24,7 @@
           ng-click="addHost($event)"
           loader
           loader-icon="fa-spinner"
+          title="Clique para adicionar o ip na lista de hosts conhecidos"
           class="btn btn-primary without-label">
           <span class="fa fa-plus"></span> Adicionar
         </button>
@@ -37,21 +38,28 @@
           <th>IP</th>
           <th>Perdas</th>
           <th>Latência</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="host in model.hosts">
+        <tr ng-repeat="host in hosts track by $index">
           <td>{{host.ip}}</td>
           <td>{{host.lost | number}}%</td>
           <td>{{host.latency}}</td>
+          <td>
+            <button
+              ng-click="removeHost(host.ip)"
+              class="btn btn-sm btn-danger">
+              <span class="fa fa-remove"></span>
+            </button>
+          </td>
         </tr>
         <tr ng-hide="model.hosts.length">
-          <td colspan="3">
+          <td colspan="4">
             <div class="alert alert-info -m-b">Nenhum host informado.</div>
           </td>
         </tr>
       </tbody>
     </table>
-
   </div>
 </div>

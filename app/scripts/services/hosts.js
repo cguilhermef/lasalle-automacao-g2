@@ -8,15 +8,11 @@
  * Service in the webappApp.
  */
 angular.module('webappApp')
-  .service('Hosts', function ($http) {
+  .service('Hosts', function (Config, $http, $localStorage, _) {
     var service = this;
 
-    service.model = {
-      hosts: []
-    };
-
     this.statusIp = function(ipAddress, callback) {
-      $http.post('http://ubuntutres:3000/script', {
+      $http.post(Config.getScriptURL(), {
         command: 'ipStatus',
         params: [ipAddress]
       }).then(function(response){
@@ -26,9 +22,35 @@ angular.module('webappApp')
       });
     };
 
+    this.getHosts = function() {
+      if (!$localStorage.db) {
+        $localStorage.db = {
+          hosts: []
+        };
+      }
+      return $localStorage.db.hosts;
+    };
+
+    this.removeHost = function(ipAddress, callback) {
+      // $localStorage.hosts = _.omit($localStorage.hosts, {ip: ipAddress});
+      $localStorage.db.hosts = _.reject($localStorage.db.hosts, {ip: ipAddress});
+      if (callback) {
+        callback();
+      }
+    };
     this.addHost = function(ipAddress, callback) {
       service.statusIp(ipAddress, function(error, data) {
-        callback(error, data);
+        if (!error && data.exitCode === 0) {
+          if (!$localStorage.db) {
+            $localStorage.db = {
+              hosts: []
+            };
+          }
+          $localStorage.db.hosts.push(data.content);
+          callback(error, data);
+        } else {
+          callback(data);
+        }
       });
     };
 

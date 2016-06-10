@@ -9,10 +9,10 @@
           <div class="form-group">
             <label for="" class="form-control-label">IP do servidor</label>
             <!-- <input type="text" ng-model="filtro.ipServidor" class="form-control"> -->
-            <select name="" ng-model="filtro.ipServidor" id="" class="form-control">
-              <option value="">Selecione</option>
-              <option value="1">192.168.1.20</option>
-              <option value="2">192.168.1.21</option>
+            <select
+              name=""
+              ng-options="h.ip for h in hosts"
+              ng-model="filtro.ipServidor" id="" class="form-control">
             </select>
           </div>
         </div>
@@ -33,5 +33,35 @@
         </div>
       </div>
     </form>
+    <hr>
+    <h4>Usuários</h4>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>IP</th>
+          <th>--</th>
+          <th>--</th>
+          <th>--</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="user in model.users track by $index">
+          <td>{{host.ip}}</td>
+          <td>{{host.lost | number}}%</td>
+          <td>{{host.latency}}</td>
+          <td>
+            <button
+              class="btn btn-sm btn-danger">
+              <span class="fa fa-remove"></span>
+            </button>
+          </td>
+        </tr>
+        <tr ng-hide="model.users.length">
+          <td colspan="4">
+            <div class="alert alert-info -m-b">Nenhum usuário para ser listado.</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

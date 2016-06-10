@@ -1,1 +1,1 @@
-{"exitCode":0, "content":{"ip":"192.168.0.201", "lost":0, "latency":0.568 }}
+{"exitCode":0, "content":{"ip":"10.31.7.3", "lost":0, "latency":0.378 }}

@@ -34,16 +34,16 @@
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th>Hostname</th>
-          <th>Ip atual</th>
-          <th>Status</th>
+          <th>IP</th>
+          <th>Perdas</th>
+          <th>Latência</th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="host in model.hosts">
-          <td>{{host.hostname}}</td>
           <td>{{host.ip}}</td>
-          <td>{{host.status}}</td>
+          <td>{{host.lost | number}}%</td>
+          <td>{{host.latency}}</td>
         </tr>
         <tr ng-hide="model.hosts.length">
           <td colspan="3">

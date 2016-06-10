@@ -8,7 +8,11 @@ var app = express();
 app.use(express.static('dist'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 var availableCommands = [
   'show_top',
   'ls_root',
@@ -17,41 +21,33 @@ var availableCommands = [
 
 var result = {};
 var params = '';
+var output = null;
 //Executa scripts que retornam apenas 1 para sucesso ou 0 para erro
 app.post('/script', function(req, res) {
-//  console.log(req.body);
+ 
+  //transforma o array de parâmetros em uma string separada por espaços
+  //compatível com a passagem de parâmetros para o shellscript
   if (req.body.params) {
     params = req.body.params.toString().replace(/\,/ig,' ');
   } else {
     params = '';
   }
-
+  //executa o respectivo comando no servidor da aplicação
   shelljs.exec('sh/scripts/'+req.body.command+'.sh '+params, function(code) {
-    if (code === 'txt') {
-      result.json = fs.readFileSync('sh/scripts/'+req.body.command+'.txt', "utf8");
-      result.json = JSON.parse(result.json);
+    //se a saída do .sh for 126 ou 127, retorna um objeto indicando erro.
+    if (code === 126 || code === 127){
+      result = {exitCode:code};
     } else {
-      result.exit = code;
+      //se a saída for outro status, faz a leitura do output do comando,
+      //que é um json string em um arquivo txt com o mesmo nome do comando.
+      output = fs.readFileSync('sh/scripts/'+req.body.command+'.txt', "utf8");
+      result = JSON.parse(output);
     }
-    res.send(result);
+    res.json(result);
   });
 });
 
 //executa .sh que realizam operações e retornam a saída preparada do console
-app.get('/shell', function(req, res) {
-  if (!req.query.command) {
-    res.send('Você precisa informar um comando!');
-    return;
-  }
-  if (availableCommands.indexOf(req.query.command) === -1) {
-    res.send('Comando invalido ou inexistente');
-    return;
-  }
-  shelljs.exec('sh/bashes/'+req.query.command+'.sh');
-  result = '<pre>' + fs.readFileSync('sh/bashes/'+req.query.command+'.txt', "utf8") + '</pre>';
-  res.send(result);
-});
-
 app.listen(3000, function() {
   console.log('ta rolando!');
 });

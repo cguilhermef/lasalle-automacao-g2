@@ -3,7 +3,6 @@
 path=/www/g2/sh/scripts/
 script=${path}ipStatus
 
-echo $2
 if [ -e ${script}.lock ]
 then
   exit 126
@@ -11,8 +10,10 @@ else
   
   touch ${script}.lock
   
-  unset latencyAVG
-  unset lost
+  unset latencia
+  unset perda
+  unset ativo
+  
 
   if [ -e ${script}.txt ]
   then 
@@ -29,20 +30,22 @@ else
     rm ${script}.lock
     exit
   fi
-  ping -c2 $1 > ${script}.tmp 2>&1
-  lost=`cat ${script}.tmp | tail -n2 | head -n1 | cut -d\, -f3 | cut -d\  -f2 | sed 's/[^0-9 \.]//g'`
-  latencyAVG=`cat ${script}.tmp | tail -n1 | cut -d= -f2 | cut -d\/ -f2`
 
-  if [ -z $latencyAVG ]
+  ping -c2 $1 > ${script}.tmp 2>&1
+  result=$?
+
+  if [ $result -eq 0 ]
   then
-    latencyAVG=null
-  fi  
-  if [ -z $lost ]
-  then 
-    lost=null
+    perda=`cat ${script}.tmp | tail -n2 | head -n1 | cut -d\, -f3 | cut -d\  -f2 | sed 's/[^0-9 \.]//g'`
+    latencia=`cat ${script}.tmp | tail -n1 | cut -d= -f2 | cut -d\/ -f2`
+    ativo=true
+  else
+    ativo=false
+    latencia=null
+    perda=null
   fi
 
-  echo -e "{\"exitCode\":0, \"content\":{\"ip\":\"$1\", \"lost\":$lost, \"latency\":$latencyAVG }}" >> ${script}.txt  
+  echo -e "{\"exitCode\":0, \"content\":{\"ip\":\"$1\", \"perda\":$perda, \"latencia\":$latencia,\"ativo\":$ativo }}" >> ${script}.txt  
  
   rm ${script}.tmp 
   rm ${script}.lock

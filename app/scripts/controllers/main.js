@@ -27,10 +27,10 @@ angular.module('webappApp')
         ngToast.dismiss();
         if (!error) {
           $scope.model.host.hostname = '';
-          if (data.content.lost === 100) {
+          if (!data.content.ativo) {
             ngToast.create({
               className: 'warning',
-              content: '<span class="fa fa-exclamation-triangle"></span> Este host parece estar indisponível',
+              content: '<span class="fa fa-exclamation-triangle"></span> Este host não está ativo.',
               timeout: 5000
             });
           } else {

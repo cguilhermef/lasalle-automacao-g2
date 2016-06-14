@@ -8,7 +8,7 @@
  * Controller of the webappApp
  */
 angular.module('webappApp')
-  .controller('UsuarioCtrl', function (Usuario, $scope, Hosts) {
+  .controller('UsuariosCtrl', function (Usuarios, $scope, Hosts) {
 
     $scope.init = function() {
       if (!$scope.model) { $scope.model = {}; }
@@ -22,7 +22,7 @@ angular.module('webappApp')
     };
 
     $scope.buscarUsuario = function() {
-      Usuario.getUsuario($scope.filtro.ipServidor, $scope.filtro.nomeUsuario, function(error, data) {
+      Usuarios.getUsuario($scope.filtro.ipServidor, $scope.filtro.nomeUsuario, function(error, data) {
         console.log(data);
       });
     };

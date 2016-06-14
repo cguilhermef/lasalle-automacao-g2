@@ -24,17 +24,22 @@ angular
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
-        controllerAs: 'main'
+        controllerAs: 'ctrl'
       })
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl',
-        controllerAs: 'about'
+        controllerAs: 'ctrl'
       })
       .when('/usuario', {
-        templateUrl: 'views/usuario.html',
-        controller: 'UsuarioCtrl',
-        controllerAs: 'usuario'
+        templateUrl: 'views/usuarios.html',
+        controller: 'UsuariosCtrl',
+        controllerAs: 'ctrl'
+      })
+      .when('/backups', {
+        templateUrl: 'views/backups.html',
+        controller: 'BackupsCtrl',
+        controllerAs: 'ctrl'
       })
       .otherwise({
         redirectTo: '/'
@@ -46,7 +51,9 @@ angular
       horizontalPosition: 'center',
       maxNumber: 3
     });
-  }]).run(function($rootScope) {
+  }]).run(function($rootScope, $locale) {
+    $locale.NUMBER_FORMATS.CURRENCY_SYM = 'R$ ';
+    $locale.DATETIME_FORMATS.shortDate = 'dd/MM/yyyy';
     $rootScope.config = {
       SCRIPTS_URL: 'http://ubuntutres:3000/script'
     };

@@ -1,7 +1,10 @@
 #!/bin/bash
 
 path=/www/g2/sh/scripts/backup/
+targetPath=/www/g2/backups/
 script=${path}prepararArquivos
+
+echo $1 $2
 
 if [ -e ${script}.lock ]
 then
@@ -22,9 +25,18 @@ else
   if [ -z $2 ]
 	then
     echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Deve ser informado ao menos um item.\"}}" >> ${script}.txt
-	fi  
+	fi
+
+  if [ ! -d $targetPath ]
+  then
+		mkdir $targetPath
+		mkdir ${targetPath}temp
+	fi
   
-	rm -Rf ${path}temp/* >> /dev/null
+  if [ -d ${targetPath}temp ]
+	then
+		rm -Rf ${targetPath}temp/* >> /dev/null
+	fi
 
   ipOrigem=$1
   itens=`echo $* | cut -d\  -f2-`
@@ -39,7 +51,7 @@ else
 	done
   echo $itensOk	
   timeStamp=`date +%Y%m%d%H%M%S`
-	tar -cf ${path}temp/backup_${timeStamp}.tar $itensOk
+	tar -cf ${targetPath}temp/backup_${timeStamp}.tar $itensOk
 
   if [ $? -eq 0 ]
   then

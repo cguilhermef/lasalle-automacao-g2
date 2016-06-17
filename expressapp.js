@@ -47,6 +47,19 @@ app.post('/script', function(req, res) {
   });
 });
 
+//envia o pacote de scripts a serem utilizados no host
+
+app.get('/package-cli', function(req, res) {
+	
+	shelljs.exec('sh/package-cli.sh', function(code){
+		if (code === 0) {
+			res.sendFile('/www/g2/sh/package-cli.tar');
+		} else {
+			res.status(500).end();
+		}
+	});
+});
+
 //executa .sh que realizam operações e retornam a saída preparada do console
 app.listen(3000, function() {
   console.log('ta rolando!');

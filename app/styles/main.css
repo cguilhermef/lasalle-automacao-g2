@@ -2,6 +2,44 @@
   margin-top: 24px;
 }
 
-.-m-b {
-  margin-bottom: 0;
+.-m-b { margin-bottom: 0; }
+.m-b {margin-bottom: 1rem;}
+
+
+.v-align-m {
+  vertical-align: middle;
+}
+
+@keyframes pulse {
+  0% { opacity: 1}
+  10% { opacity: .9}
+  20% { opacity: .8}
+  30% { opacity: .7}
+  40% { opacity: .5}
+  50% { opacity: .3}
+  65% { opacity: .5}
+  70% { opacity: .7}
+  80% { opacity: .8}
+  90% { opacity: .9}
+  100% { opacity: 1}
+}
+
+@keyframes pulse2 {
+  0% { opacity: .3}
+  10% { opacity: .5}
+  20% { opacity: .7}
+  30% { opacity: .8}
+  40% { opacity: .9}
+  50% { opacity: 1}
+  65% { opacity: .9}
+  70% { opacity: .8}
+  80% { opacity: .7}
+  90% { opacity: .5}
+  100% { opacity: .3}
+}
+
+.pulsing {
+  animation-duration: 1.5s;
+  animation-name: pulse2;
+  animation-iteration-count: infinite;
 }

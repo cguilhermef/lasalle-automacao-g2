@@ -44,8 +44,14 @@
       <tbody>
         <tr ng-repeat="host in hosts track by $index">
           <td>{{host.ip}}</td>
-          <td>{{host.lost | number}}%</td>
-          <td>{{host.latency}}</td>
+          <td>
+            <span ng-show="host.perda !== null">{{host.perda | number:2}}%</span>
+            <span ng-hide="host.perda !== null">inacessível</span>
+          </td>
+          <td>
+            <span ng-show="host.latencia !== null">{{host.latencia | number:3}}s</span>
+            <span ng-hide="host.latencia !== null">inacessível</span>
+          </td>
           <td>
             <button
               ng-click="removeHost(host.ip)"
@@ -54,7 +60,7 @@
             </button>
           </td>
         </tr>
-        <tr ng-hide="model.hosts.length">
+        <tr ng-hide="hosts.length">
           <td colspan="4">
             <div class="alert alert-info -m-b">Nenhum host informado.</div>
           </td>

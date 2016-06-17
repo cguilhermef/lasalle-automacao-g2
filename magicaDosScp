@@ -1,0 +1,1 @@
+scp -3 wux@192.168.0.16:/www/g2/backups/lixinho.txt wux@192.168.0.18:/www/g2/backups/

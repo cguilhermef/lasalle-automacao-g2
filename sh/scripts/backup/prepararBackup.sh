@@ -40,7 +40,7 @@ else
 		mkdir -p ${path}temp
 	fi
   
-  itens=$1
+  itens=$*
   timeStamp=`date +%Y%m%d%H%M%S`
    
 	tar -cf ${path}temp/backup_${timeStamp}.tar $itens

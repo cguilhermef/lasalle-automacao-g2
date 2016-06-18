@@ -1,0 +1,1 @@
+{"exitCode":0,"content":{"message":"Arquivos prontos para o backup.","arquivoGerado":"/www/g2/backups/temp/backup_.tar"}}

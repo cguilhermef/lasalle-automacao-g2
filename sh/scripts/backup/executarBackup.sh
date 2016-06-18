@@ -2,11 +2,8 @@
 
 path=/www/g2/sh/scripts/backup/
 targetPath=/www/g2/backups/
-script=${path}prepararArquivos
+script=${path}executarBackup
 
-function ipLocal() { 
- echo `ifconfig $1 | grep "inet end" | cut -d\t -f2 | cut -d\  -f3` 
-}
 
 if [ -e ${script}.lock ]
 then
@@ -36,10 +33,14 @@ else
   
   ipOrigem=$1
   ipDestino=$2
+  itens=`echo $* | cut -d\  -f3-`
+  echo $itens
+
+  ssh wux@${ipOrigem} "${path}prepararBackup.sh $itens"
 
   if [ $ipOrigem != $ipDestino ]
 	then
-    ${path}moverBackup.sh $ipOrigem $ipDestino $3
+    ${path}moverBackup.sh $ipOrigem $ipDestino
 	fi
   
 if [ $? -eq 0 ]

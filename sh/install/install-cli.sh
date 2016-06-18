@@ -20,6 +20,7 @@ else
 
 		useradd -d /home/wux -m -g sudo --no-user-group -p $password -s /bin/bash wux
 		adduser wux root
+		adduser wux sudo
 		mkdir -p /home/wux/.ssh
 		touch /home/wux/.ssh/authorized_keys
     
@@ -31,11 +32,11 @@ else
   if [ ! -d /www ]
 	then
     echo -e "Criando estrutura de pastas... \c"
-	  mkdir -p /www/g2/scripts
-    mkdir -p /www/g2/backups
-    chown -Rf wux:root /www
+    mkdir -p /www/g2/sh/backups
 		echo "ok!"
-
+    echo -e "Movendo arquivos... \c"
+		mv scripts /www/g2/sh/scripts
+    chown -Rf wux:root /www
 	fi
 	echo
   echo "Instalação concluída!"

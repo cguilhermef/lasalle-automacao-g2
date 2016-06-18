@@ -1,1 +1,2 @@
-{"exitCode":500,"content":{"message":"Ocorreu um erro ao reunir os arquivos."}}
+{"exitCode":500,"content":{"message":"Não foi encontrado arquivo gerado pelo preparador de arquivos."}}
+{"exitCode":0,"content":{"message":"Arquivos prontos para o backup.","arquivoGerado":"/www/g2/backups/temp/backup_.tar"}}

@@ -1,0 +1,47 @@
+#!/bin/bash
+# Este script moverá o backup de um host para outro
+path=/www/g2/sh/scripts/backup/
+targetPath=/www/g2/backups/
+script=${path}prepararArquivos
+
+if [ -e ${script}.lock ]
+then
+  exit 126
+else
+  
+  touch ${script}.lock
+
+  if [ -e ${script}.txt ]
+  then 
+    rm ${script}.txt
+  fi
+  if [ -e ${script}.tmp ]
+  then 
+    rm ${script}.tmp
+  fi
+
+  if [ -z $3 ] || [ ! -e ${targetPath}temp/$3 ]
+	then
+    echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Não foi encontrado arquivo gerado pelo preparador de arquivos.\"}}" >> ${script}.txt
+	fi
+
+
+  ipOrigem=$1
+
+  if [ $1 != $2 ]
+	then
+	  scp -3 -r -o StrictHostKeyChecking=no wux@${1}:${path}temp/*.tar wux@${2}:/www/g2/sh/backups/
+		ssh wux@${1} "rm -Rf ${path}temp/*.tar"
+	fi
+
+  if [ $? -eq 0 ]
+  then
+	  echo -e "{\"exitCode\":0,\"content\":{\"message\":\"Arquivos prontos para o backup.\",\"arquivoGerado\":\"${targetPath}temp/backup_${timeStamp}.tar\"}}" >> ${script}.txt
+	else
+ 	  echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreu um erro ao reunir os arquivos.\"}}" >> ${script}.txt
+	fi
+
+  rm ${script}.lock
+  exit
+
+fi

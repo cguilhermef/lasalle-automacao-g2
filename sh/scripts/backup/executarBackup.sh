@@ -7,6 +7,7 @@ script=${path}executarBackup
 
 if [ -e ${script}.lock ]
 then
+  echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Há um processo em andamento.\"}}" >> ${script}.txt
   exit 126
 else
   
@@ -34,20 +35,44 @@ else
   ipOrigem=$1
   ipDestino=$2
   itens=`echo $* | cut -d\  -f3-`
-  echo $itens
-
-  ssh wux@${ipOrigem} "${path}prepararBackup.sh $itens"
+ 
+ 
+  ssh wux@${ipOrigem} "${path}prepararBackup.sh $itens" 
+	arquivo=`ssh wux@${ipOrigem} "ls ${path}temp/*.tar" | cut -d_ -f2`
+	
+	if [ $? -ne 0 ]
+	then
+    echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreu um erro ao preparar os arquivos na origem.\"}}" >> ${script}.txt
+	fi 
 
   if [ $ipOrigem != $ipDestino ]
 	then
     ${path}moverBackup.sh $ipOrigem $ipDestino
+
+		if [ $? -ne 0 ]
+		then
+    	echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreu um erro ao mover o backup, da origem para o destino.\"}}" >> ${script}.txt
+		fi
 	fi
   
-if [ $? -eq 0 ]
+	if [ $? -eq 0 ]
   then
-	  echo -e "{\"exitCode\":0,\"content\":{\"message\":\"Arquivos prontos para o backup.\",\"arquivoGerado\":\"${targetPath}temp/backup_${timeStamp}.tar\"}}" >> ${script}.txt
+    dataExecucao=`date +%s000`
+	  echo -e "
+{
+	\"exitCode\":0,
+	\"content\":
+		{
+			\"message\":\"Backup realizado com sucesso!\", 
+			\"ipOrigem\":\"$ipOrigem\",
+			\"ipDestino\":\"$ipDestino\",
+			\"arquivoGerado\":\"$arquivo\", 
+			\"dataExecucao\":\"$dataExecucao\"
+		}
+}" >> ${script}.txt
+
 	else
- 	  echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreu um erro ao reunir os arquivos.\"}}" >> ${script}.txt
+ 	  echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreram erros durante o process.\"}}" >> ${script}.txt
 	fi
 
   rm ${script}.lock

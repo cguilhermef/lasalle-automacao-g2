@@ -2,7 +2,7 @@
 # Este script moverá o backup de um host para outro
 path=/www/g2/sh/scripts/backup/
 targetPath=/www/g2/backups/
-script=${path}prepararArquivos
+script=${path}moverBackups
 
 if [ -e ${script}.lock ]
 then
@@ -19,14 +19,6 @@ else
   then 
     rm ${script}.tmp
   fi
-
-  if [ -z $3 ] || [ ! -e ${targetPath}temp/$3 ]
-	then
-    echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Não foi encontrado arquivo gerado pelo preparador de arquivos.\"}}" >> ${script}.txt
-	fi
-
-
-  ipOrigem=$1
 
   if [ $1 != $2 ]
 	then

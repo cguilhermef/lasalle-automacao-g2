@@ -3,7 +3,7 @@
 
 path=/www/g2/sh/scripts/backup/
 targetPath=/www/g2/backups/
-script=${path}prepararArquivos
+script=${path}prepararBackups
 
 function ipLocal() { 
  echo `ifconfig $1 | grep "inet end" | cut -d\t -f2 | cut -d\  -f3` 
@@ -38,6 +38,8 @@ else
   if [ ! -d ${path}temp ]
 	then
 		mkdir -p ${path}temp
+	else
+	  rm -Rf ${path}temp/*.tar
 	fi
   
   itens=$*
@@ -45,9 +47,7 @@ else
    
 	tar -cf ${path}temp/backup_${timeStamp}.tar $itens
 
-	#mv backup_${timeStamp}.tar ${path}temp/backup_${timeStamp}.tar
-  
-	ARQUIVOGERADO=backup_${timeStamp}.tar
+  echo $timeStamp >> ${path}temp/log.txt
   
   if [ $? -eq 0 ]
   then

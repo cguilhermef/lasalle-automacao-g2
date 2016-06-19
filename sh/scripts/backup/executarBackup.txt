@@ -1,1 +1,12 @@
-{"exitCode":0,"content":{"message":"Arquivos prontos para o backup.","arquivoGerado":"/www/g2/backups/temp/backup_.tar"}}
+
+{
+	"exitCode":0,
+	"content":
+		{
+			"message":"Backup realizado com sucesso!", 
+			"ipOrigem":"192.168.0.17",
+			"ipDestino":"192.168.0.15",
+			"arquivoGerado":"20160618233248.tar", 
+			"dataExecucao":"1466303570000"
+		}
+}

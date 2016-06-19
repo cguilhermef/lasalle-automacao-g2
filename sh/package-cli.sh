@@ -16,9 +16,6 @@ else
 		rm ${script}.tar
 	fi
 
-#	tar -cf ${script}.tar --directory=${path}install install-cli.sh 
-#  tar -cf ${script}-scripts.tar --directory=${path}scripts/ .
-
   tar -cf ${script}.tar --directory=${path}install install-cli.sh 
   tar -cf ${script}-scripts.tar --directory=${path} scripts/
  

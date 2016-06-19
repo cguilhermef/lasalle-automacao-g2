@@ -3,7 +3,7 @@
 
 path=/www/g2/sh/scripts/backup/
 targetPath=/www/g2/backups/
-script=${path}prepararBackups
+script=${path}prepararBackup
 
 function ipLocal() { 
  echo `ifconfig $1 | grep "inet end" | cut -d\t -f2 | cut -d\  -f3` 
@@ -24,9 +24,14 @@ else
   then 
     rm ${script}.tmp
   fi
+  if [ -e ${script}.error ]
+  then 
+    rm ${script}.error
+  fi
 
   if [ -z $1 ]
 	then
+		echo "Deve ser informado ao menos um item" >> ${script}.error
     echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Deve ser informado ao menos um item.\"}}" >> ${script}.txt
 	fi
 
@@ -43,20 +48,36 @@ else
 	fi
   
   itens=$*
-  timeStamp=`date +%Y%m%d%H%M%S`
+  itensOk=''
+
+  for item in $itens
+	do
+		if [ -e $item ]
+		then
+      itensOk="${itensOk} $item"
+		fi
+	done
+  echo "itens ok: $itensOk"
+  if [ $itensOk != '' ]
+	then
+		timeStamp=`date +%Y%m%d%H%M%S`
    
-	tar -cf ${path}temp/backup_${timeStamp}.tar $itens
+		tar -cf ${path}temp/backup_${timeStamp}.tar $itens
 
-  echo $timeStamp >> ${path}temp/log.txt
+  	echo $timeStamp >> ${path}temp/log.txt
   
-  if [ $? -eq 0 ]
-  then
-	  echo -e "{\"exitCode\":0,\"content\":{\"message\":\"Arquivos prontos para o backup.\",\"arquivoGerado\":\"${targetPath}temp/backup_${timeStamp}.tar\"}}" >> ${script}.txt
-	else
- 	  echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreu um erro ao reunir os arquivos.\"}}" >> ${script}.txt
-	fi
+	  if [ $? -ne 0 ]
+  	then
+			echo "Ocorreu um erro ao reunir os arquivos" >> ${script}.error
+ 		  echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreu um erro ao reunir os arquivos.\"}}" >> ${script}.txt
+		fi
 
+	else
+		echo "Nenhum dos arquivos ou diretórios informados existe." >> ${script}.error
+    echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Nenhum dos arquivos ou diretórios informados existe.\"}}" >> ${script}.txt
+		exit 127
+	fi 
+  
   rm ${script}.lock
-  exit
 
 fi

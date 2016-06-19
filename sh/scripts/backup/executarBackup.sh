@@ -38,44 +38,51 @@ else
  
  
   ssh wux@${ipOrigem} "${path}prepararBackup.sh $itens" 
-	arquivo=`ssh wux@${ipOrigem} "ls ${path}temp/*.tar" | cut -d_ -f2`
+  houveErro=`ssh wux@${ipOrigem} "ls ${path} | grep -c \"prepararBackup.error\""`
+
+	if [ ! $houveErro ]
+	then
+		arquivo=`ssh wux@${ipOrigem} "ls ${path}temp/*.tar" | cut -d_ -f2`
 	
-	if [ $? -ne 0 ]
-	then
-    echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreu um erro ao preparar os arquivos na origem.\"}}" >> ${script}.txt
-	fi 
-
-  if [ $ipOrigem != $ipDestino ]
-	then
-    ${path}moverBackup.sh $ipOrigem $ipDestino
-
 		if [ $? -ne 0 ]
 		then
-    	echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreu um erro ao mover o backup, da origem para o destino.\"}}" >> ${script}.txt
+    	echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreu um erro ao preparar os arquivos na origem.\"}}" >> ${script}.txt
+		fi 
+
+  	if [ $ipOrigem != $ipDestino ]
+		then
+    	${path}moverBackup.sh $ipOrigem $ipDestino
+
+			if [ $? -ne 0 ]
+			then
+    		echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreu um erro ao mover o backup, da origem para o destino.\"}}" >> ${script}.txt
+			fi
 		fi
-	fi
   
-	if [ $? -eq 0 ]
-  then
-    dataExecucao=`date +%s000`
-	  echo -e "
-{
-	\"exitCode\":0,
-	\"content\":
-		{
-			\"message\":\"Backup realizado com sucesso!\", 
-			\"ipOrigem\":\"$ipOrigem\",
-			\"ipDestino\":\"$ipDestino\",
-			\"arquivoGerado\":\"$arquivo\", 
-			\"dataExecucao\":\"$dataExecucao\"
-		}
-}" >> ${script}.txt
+		if [ $? -eq 0 ]
+  	then
+   		dataExecucao=`date +%s000`
+	  	echo -e "
+	{
+		\"exitCode\":0,
+		\"content\":
+			{
+				\"message\":\"Backup realizado com sucesso!\", 
+				\"ipOrigem\":\"$ipOrigem\",
+				\"ipDestino\":\"$ipDestino\",
+				\"arquivoGerado\":\"$arquivo\", 
+				\"dataExecucao\":\"$dataExecucao\"
+			}
+	} " >> ${script}.txt
 
-	else
- 	  echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreram erros durante o process.\"}}" >> ${script}.txt
+		else
+ 	 	 echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreram erros durante o process.\"}}" >> ${script}.txt
+		fi
+
+	else # se houve erro na preparacao
+		msgErro=`ssh wux@${ipOrigem} "cat ${path}prepararBackup.error"`
+ 	 	echo -e "{\"exitCode\":500,\"content\":{\"message\":\"$msgErro\"}}" >> ${script}.txt
+  	rm ${script}.lock
+  	exit
 	fi
-
-  rm ${script}.lock
-  exit
-
 fi

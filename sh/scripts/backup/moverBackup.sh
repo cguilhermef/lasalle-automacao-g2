@@ -19,6 +19,12 @@ else
   then 
     rm ${script}.tmp
   fi
+	if [ -e ${script}.error ]
+  then 
+    rm ${script}.error
+  fi
+
+	
 
   if [ $1 != $2 ]
 	then

@@ -21,24 +21,17 @@ angular.module('webappApp')
       });
     };
 // /www/g2/sh/scripts/backup/teste.sh
-    this.executarBackup = function(ipOrigem, ipDestino, itens, diretorioDestino, callback) {
-      var params = [ipOrigem].concat(itens);
+    this.executarBackup = function(ipOrigem, ipDestino, itens, callback) {
+      var params = [ipOrigem, ipDestino].concat(itens);
 
       $http.post(Config.getScriptURL(), {
-        command: 'backup/prepararArquivos',
+        command: 'backup/executarBackup',
         params: params
       }).then(function(response) {
-        // callback(null, response);
-        if (response.data.exitCode === 0) {
-          $http.post(Config.getScriptURL(), {
-            command: ['backup/moverBackupParaDestino'],
-            params: [ipDestino, diretorioDestino, response.data.content.arquivoGerado]
-          }).then(function(response) {
-            console.log(response);
-          }, function(error) {
-            console.log(error);
-          });
-        }
+        callback(null, response.data);
+        // if (response.data.exitCode === 0) {
+        //   console.log(response);
+        // }
       }, function(error){
         callback(error);
       });

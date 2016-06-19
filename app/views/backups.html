@@ -16,7 +16,7 @@
               class="form-control"
               id="origem"
               name="hostOrigem"
-              ng-disabled="running"
+              ng-disabled="running || model.backup.hostOrigem"
               ng-required="true"
               ng-model="model.ipOrigem"
               ng-options="h.ip as h.ip for h in model.hosts"
@@ -29,7 +29,7 @@
             <select
               class="form-control"
               id="destino"
-              ng-disabled="running"
+              ng-disabled="running || model.backup.hostDestino"
               ng-model="model.ipDestino"
               ng-options="h.ip as h.ip for h in model.hosts"
             ></select>
@@ -46,56 +46,66 @@
           </button>
         </div>
       </div>
-      <div
-       ng-show="model.backup.hostOrigem && model.backup.hostDestino"
-       class="row">
-        <div class="col-xs-12 col-md-4">
-          <div class="form-group">
-            <label for="" class="control-label">
-              Diretórios e arquivos
-            </label>
-            <div class="input-group m-b">
-              <input
-                type="text"
-                class="form-control"
-                ng-model="model.item">
-              <div class="input-group-btn">
-                <button
-                  ng-click="addItem()"
-                  class="btn btn-primary">
-                  <span class="fa fa-plus"></span>
-                </button>
+      <div ng-show="model.backup.hostOrigem && model.backup.hostDestino">
+        <div class="row">
+          <div class="col-xs-12 col-md-8">
+            <div class="form-group">
+              <label for="" class="control-label">
+                Diretórios e arquivos
+              </label>
+              <div class="input-group m-b">
+                <input
+                  type="text"
+                  class="form-control"
+                  ng-model="model.item">
+                <div class="input-group-btn">
+                  <button
+                    ng-click="addItem()"
+                    class="btn btn-primary">
+                    <span class="fa fa-plus"></span>
+                  </button>
+                </div>
               </div>
             </div>
-            <div
-             class="input-group m-b"
-             ng-repeat="item in model.backup.itens track by $index">
+          </div>
+        </div>
+        <div
+          ng-repeat="item in model.backup.itens track by $index"
+          class="row">
+          <div class="col-xs-12 col-md-8">
+            <div class="input-group m-b">
               <input
                 type="text"
                 class="form-control"
                 ng-model="model.backup.itens[$index]">
               <div class="input-group-btn">
                 <button
-                  ng-click="removeItem($index)"
-                  class="btn btn-warning">
-                  <span class="fa fa-minus"></span>
+                  ng-click="removeItem(model.backup.itens[$index])"
+                  class="btn btn-danger">
+                  <span class="fa fa-trash-o"></span>
                 </button>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-xs-12 col-md-4">
-          <div class="form-group">
-            <label for="" class="control-label">Diretório destino</label>
-            <input type="text" class="form-control" ng-model="model.backup.diretorioDestino">
-          </div>
-          <div ng-show="model.backup.diretorioDestino" class="form-group">
-            <button
-              ng-click="executarBackup($event)"
-              class="btn btn-danger">
-              <span class="fa fa-bolt"></span> Executar backup
-            </button>
-          </div>
+      </div>
+      <div
+        ng-show="model.backup.hostOrigem && model.backup.hostDestino"
+        class="row">
+        <div class="col-xs-12">
+          <button
+            ng-click="cancelarBackup()"
+            class="btn btn-primary">
+            <span class="fa fa-ban"></span> Cancelar
+          </button>
+          <button
+            ng-show="model.backup.itens.length"
+            ng-click="executarBackup($event)"
+            loader
+            loader-icon="fa-spinner"
+            class="btn btn-danger">
+            <span class="fa fa-bolt"></span> Executar backup
+          </button>
         </div>
       </div>
     </form>
@@ -104,27 +114,22 @@
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th>Data e hora</th>
           <th>Origem</th>
           <th>Destino</th>
-          <th>Pastas</th>
+          <th>Data e hora</th>
+          <th>Arquivo</th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="user in model.users track by $index">
-          <td>{{host.ip}}</td>
-          <td>{{host.lost | number}}%</td>
-          <td>{{host.latency}}</td>
-          <td>
-            <button
-              class="btn btn-sm btn-danger">
-              <span class="fa fa-remove"></span>
-            </button>
-          </td>
+        <tr ng-repeat="backup in model.backups track by $index">
+          <td>{{backup.ipOrigem}}</td>
+          <td>{{backup.ipDestino}}</td>
+          <td>{{backup.dataExecucao | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+          <td>{{backup.arquivoGerado}}</td>
         </tr>
-        <tr ng-hide="model.users.length">
+        <tr ng-hide="model.backups.length">
           <td colspan="4">
-            <div class="alert alert-info -m-b">Nenhum usuário para ser listado.</div>
+            <div class="alert alert-info -m-b">Nenhum backup realizado.</div>
           </td>
         </tr>
       </tbody>

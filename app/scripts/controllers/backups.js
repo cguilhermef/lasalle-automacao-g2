@@ -17,14 +17,18 @@ angular.module('webappApp')
       $scope.model.ipOrigem = null;
       $scope.model.ipDestino = null;
       $scope.model.item = null;
+      $scope.resetModelBackup();
+      $scope.model.backups = [];
+      $scope.running = false;
+    };
+    $scope.resetModelBackup = function() {
+      if (!$scope.model) { $scope.model = {}; }
       $scope.model.backup = {
         hostOrigem: '',
         hostDestino: '',
-        itens: [],
-        diretorioDestino: ''
-      };
-      $scope.running = false;
-    };
+        itens: []
+      }
+    }
     $scope.confirmarOrigemDestino = function($event) {
       $event.delegateTarget.toggleLoading();
       $scope.running = true;
@@ -74,20 +78,45 @@ angular.module('webappApp')
       });
     };
 
-    $scope.executarBackup = function() {
+    $scope.executarBackup = function($event) {
+      $scope.running = true;
+      $event.delegateTarget.toggleLoading();
       Backups.executarBackup(
         $scope.model.backup.hostOrigem,
         $scope.model.backup.hostDestino,
-        $scope.model.backup.itens,
-        $scope.model.backup.diretorioDestino, function(error, data) {
-        console.log('Ctrl', error, data);
+        _.without($scope.model.backup.itens, ''), function(error, data) {
+          $event.delegateTarget.toggleLoading();
+          $scope.running = false;
+        if (data.exitCode !== 0 ) {
+          ngToast.dismiss();
+          ngToast.danger(data.content.message);
+          return;
+        }
+        ngToast.dismiss();
+        ngToast.success(data.content.message);
+        $scope.resetModelBackup();
+        $scope.model.backups.push({
+          ipOrigem: data.content.ipOrigem,
+          ipDestino: data.content.ipDestino,
+          dataExecucao: data.content.dataExecucao,
+          arquivoGerado: data.content.arquivoGerado
+        });
       });
     };
 
     $scope.addItem = function() {
+      if (!$scope.model.item) {
+        return;
+      }
       $scope.model.backup.itens.push(_.clone($scope.model.item));
       $scope.model.item = null;
       console.log($scope.model.backup);
     };
+    $scope.removeItem = function(item) {
+      $scope.model.backup.itens = _.without($scope.model.backup.itens, item);
+    };
+    $scope.cancelarBackup = function() {
+      $scope.resetModelBackup();
+    }
     $scope.init();
   });

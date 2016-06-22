@@ -1,0 +1,41 @@
+
+	{
+		"exitCode":0,
+		"content":
+			{
+				"backups": [ 
+{
+						"dataExecucao":"1466371426000",
+						"ipOrigem":"192.168.0.16",
+						"ipDestino":"192.168.0.12",
+						"arquivoGerado":"20160619182332.tar"
+					}
+,
+{
+						"dataExecucao":"1466380136000",
+						"ipOrigem":"192.168.0.16",
+						"ipDestino":"192.168.0.12",
+						"arquivoGerado":"20160619204851.tar"
+					}
+,
+{
+						"dataExecucao":"1466380155000",
+						"ipOrigem":"192.168.0.16",
+						"ipDestino":"192.168.0.12",
+						"arquivoGerado":"20160619204910.tar"
+					}
+,
+{
+						"dataExecucao":"1466402770000",
+						"ipOrigem":"192.168.0.15",
+						"ipDestino":"192.168.0.15",
+						"arquivoGerado":"20160620233536.tar"
+					}
+,
+{
+						"dataExecucao":"1466405448000",
+						"ipOrigem":"192.168.0.15",
+						"ipDestino":"192.168.0.15",
+						"arquivoGerado":"20160621002016.tar"
+					}
+]}}

@@ -1,1 +1,12 @@
-{"exitCode":500,"content":{"message":"Nenhum dos arquivos ou diretórios informados existe."}}
+
+	{
+		"exitCode":0,
+		"content":
+			{
+				"message":"Backup realizado com sucesso!", 
+				"ipOrigem":"192.168.0.15",
+				"ipDestino":"192.168.0.15",
+				"arquivoGerado":"20160621002016.tar", 
+				"dataExecucao":"1466405448000"
+			}
+	} 

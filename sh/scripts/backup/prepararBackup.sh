@@ -13,7 +13,7 @@ if [ -e ${script}.lock ]
 then
   exit 126
 else
-  
+	
   touch ${script}.lock
   
   if [ -e ${script}.txt ]
@@ -32,23 +32,23 @@ else
   if [ -z $1 ]
 	then
 		echo "Deve ser informado ao menos um item" >> ${script}.error
-    echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Deve ser informado ao menos um item.\"}}" >> ${script}.txt
+  	echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Deve ser informado ao menos um item.\"}}" >> ${script}.txt
 	fi
 
   if [ ! -d ${targetPath} ]
   then
-		mkdir -p ${targetPath}
+		sudo mkdir -p ${targetPath}
 	fi
   
   if [ ! -d ${path}temp ]
 	then
-		mkdir -p ${path}temp
+		sudo mkdir -p ${path}temp
+		sudo chown -Rf wux:wux ${path}temp
 	else
-	  rm -Rf ${path}temp/*.tar
+	  sudo rm -Rf ${path}temp/*.tar
 	fi
   
   itens=$*
-  itensOk=''
 
   for item in $itens
 	do
@@ -58,15 +58,13 @@ else
 		fi
 	done
   echo "itens ok: $itensOk"
-  if [ $itensOk != '' ]
+  if [ -n $itensOk ]
 	then
 		timeStamp=`date +%Y%m%d%H%M%S`
    
-		tar -cf ${path}temp/backup_${timeStamp}.tar $itens
-
-  	echo $timeStamp >> ${path}temp/log.txt
-  
-	  if [ $? -ne 0 ]
+		sudo tar -cf ${path}temp/backup_${timeStamp}.tar $itens
+	  
+	if [ $? -ne 0 ]
   	then
 			echo "Ocorreu um erro ao reunir os arquivos" >> ${script}.error
  		  echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreu um erro ao reunir os arquivos.\"}}" >> ${script}.txt
@@ -74,10 +72,10 @@ else
 
 	else
 		echo "Nenhum dos arquivos ou diretórios informados existe." >> ${script}.error
-    echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Nenhum dos arquivos ou diretórios informados existe.\"}}" >> ${script}.txt
+   	echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Nenhum dos arquivos ou diretórios informados existe.\"}}" >> ${script}.txt
 		exit 127
 	fi 
   
-  rm ${script}.lock
+ 	rm ${script}.lock
 
 fi

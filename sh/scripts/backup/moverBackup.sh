@@ -13,11 +13,11 @@ else
 
   if [ -e ${script}.txt ]
   then 
-    rm ${script}.txt
+  	rm ${script}.txt
   fi
   if [ -e ${script}.tmp ]
   then 
-    rm ${script}.tmp
+  	rm ${script}.tmp
   fi
 	if [ -e ${script}.error ]
   then 
@@ -36,6 +36,7 @@ else
   then
 	  echo -e "{\"exitCode\":0,\"content\":{\"message\":\"Arquivos prontos para o backup.\",\"arquivoGerado\":\"${targetPath}temp/backup_${timeStamp}.tar\"}}" >> ${script}.txt
 	else
+		echo "Ocorreu um erro ao mover os arquivos" >> ${path}moverBackups.error
  	  echo -e "{\"exitCode\":500,\"content\":{\"message\":\"Ocorreu um erro ao reunir os arquivos.\"}}" >> ${script}.txt
 	fi
 

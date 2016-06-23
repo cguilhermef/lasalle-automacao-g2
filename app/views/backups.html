@@ -19,7 +19,6 @@
               id="origem"
               name="hostOrigem"
               ng-disabled="running || model.backup.hostOrigem"
-              ng-required="true"
               ng-model="model.ipOrigem"
               ng-options="h.ip as h.ip for h in model.hosts"
             ></select>
@@ -130,36 +129,47 @@
           <div class="col-xs-12 col-md-9">
             <h5 class="block-header--inner">Agendamento</h5>
             <div class="row">
-              <div class="col-xs-12 col-md-4">
+              <div class="col-xs-12 col-md-3">
                 <div class="form-group">
                   <label for="agenda-hora">Hora</label>
                   <select
                     class="form-control"
-                    ng-model="model.agendar.hora"
-                    ng-options="h for h in model.horas"
+                    ng-model="model.agendamento.hora"
+                    ng-options="h.value as h.name for h in model.horas"
                     name="" id="agenda-hora">
                   </select>
                 </div>
               </div>
-              <div class="col-xs-12 col-md-4">
+              <div class="col-xs-12 col-md-3">
                 <div class="form-group">
                   <label for="agenda-minuto">Minuto</label>
                   <select
                     class="form-control"
-                    ng-model="model.agendar.minuto"
-                    ng-options="h for h in model.minutos"
+                    ng-model="model.agendamento.minuto"
+                    ng-options="h.value as h.name for h in model.minutos"
                     name="" id="agenda-minuto">
                   </select>
                 </div>
               </div>
-              <div class="col-xs-12 col-md-4">
+              <div class="col-xs-12 col-md-3">
                 <div class="form-group">
                   <label for="agenda-dia">Dia</label>
                   <select
                     class="form-control"
-                    ng-model="model.agendar.dia"
-                    ng-options="d for d in model.dias"
+                    ng-model="model.agendamento.dia"
+                    ng-options="d.value as d.name for d in model.dias"
                     name="" id="agenda-dia">
+                  </select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-3">
+                <div class="form-group">
+                  <label for="agenda-mes">Mês</label>
+                  <select
+                    class="form-control"
+                    ng-model="model.agendamento.mes"
+                    ng-options="m.value as m.name for m in model.meses"
+                    name="" id="agenda-mes">
                   </select>
                 </div>
               </div>
@@ -167,24 +177,23 @@
             <div class="row">
               <div class="col-xs-12 col-md-6">
                 <div class="form-group">
-                  <label for="agenda-mes">Mês</label>
+                  <label for="agenda-dia-semana">Dia da semana</label>
                   <select
                     class="form-control"
-                    ng-model="model.agendar.meses"
-                    ng-options="m.value as m.name for m in model.meses"
-                    name="" id="agenda-mes">
+                    ng-model="model.agendamento.diaDaSemana"
+                    ng-options="s.value as s.name for s in model.diasDaSemana"
+                    name="" id="agenda-dia-semana">
                   </select>
                 </div>
               </div>
               <div class="col-xs-12 col-md-6">
                 <div class="form-group">
-                  <label for="agenda-dia-semana">Dia da semana</label>
-                  <select
-                    class="form-control"
-                    ng-model="model.agendar.diaDaSemana"
-                    ng-options="s.value as s.name for s in model.diasDaSemana"
-                    name="" id="agenda-dia-semana">
-                  </select>
+                  <label for="agenda-nome">Identificação</label>
+                  <input
+                    type="text"
+                    ng-model="model.agendamento.identificacao"
+                    ng-maxlenght="20"
+                    class="form-control">
                 </div>
               </div>
             </div>

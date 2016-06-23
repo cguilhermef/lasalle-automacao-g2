@@ -66,12 +66,12 @@ angular.module('webappApp')
     };
     $scope.resetModelAgendar = function() {
       if (!$scope.model) { $scope.model = {}; }
-      $scope.model.agendar = {
-        diaDaSemana: [],
-        diaDoMes: [],
-        hora: [],
-        minuto:[],
-        nome: ''
+      $scope.model.agendamento = {
+        diaDaSemana: '',
+        mes: '',
+        hora: '',
+        minuto: '',
+        identificacao: ''
       };
     };
     $scope.confirmarOrigemDestino = function($event) {
@@ -169,7 +169,24 @@ angular.module('webappApp')
       $scope.resetModelAgendar();
     };
     $scope.agendarBackup = function($event) {
+      if ($scope.novoBackup.$invalid) {
+        console.log($scope.novoBackup);
+        console.log('erro no form');
+        return;
+      }
+      console.log($scope.novoBackup);
+      var agendamento = _.cloneDeep($scope.model.agendamento);
+      var backup = _.cloneDeep($scope.model.backup);
+      var cronConfig = ''+
+        agendamento.minuto.toString() + ' ' +
+        agendamento.hora.toString() + ' ' +
+        agendamento.dia.toString() + ' ' +
+        agendamento.mes.toString() + ' ' +
+        agendamento.diaDaSemana.toString();
 
+      Backups.agendarBackup(agendamento.identificacao, cronConfig, backup, function(error, data) {
+        console.log(error, data);
+      });
     };
     $scope.cancelarAgendamento = function() {
       $scope.agendando = false;

@@ -1,0 +1,2 @@
+* * * * * /www/g2/sh/scripts/backup/executarBackup.sh 192.168.43.146 192.168.43.146 /home/guilherme/teste.txt #testedoguilherme
+50 * * * * /www/g2/sh/scripts/backup/executarBackup.sh 192.168.43.146 192.168.43.146 /home/guilherme/teste.txt #testedoguilherme

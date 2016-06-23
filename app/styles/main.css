@@ -2,6 +2,10 @@
   margin-top: 24px;
 }
 
+.fwb {
+  font-weight: 600;
+}
+
 .-m-b { margin-bottom: 0; }
 .m-b {margin-bottom: 1rem;}
 
@@ -42,4 +46,25 @@
   animation-duration: 1.5s;
   animation-name: pulse2;
   animation-iteration-count: infinite;
+}
+
+
+.block {
+  padding-bottom: 3rem;
+}
+.block-header {
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: .6rem;
+}
+.block-highlight {
+  padding: 1rem;
+  background-color: #f3f3f3;
+  margin: 1rem 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+.block-header--inner {
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 2rem;
 }

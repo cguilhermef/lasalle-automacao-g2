@@ -4,10 +4,12 @@
     <h2 class="panel-title">Backups</h2>
   </div>
   <div class="panel-body">
-    <form name="novoBackup">
-      <h4>Novo backup</h4>
+    <form name="novoBackup" class="block">
+      <h4 class="block-header">
+        <span class="fa fa-plus"></span> Novo backup
+      </h4>
       <div class="row">
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-3">
           <div
             ng-class="{'has-error': novoBackup.hostOrigem.$error && novoBackup.hostOrigem.$prestine}"
             class="form-group">
@@ -23,7 +25,7 @@
             ></select>
           </div>
         </div>
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-3">
           <div class="form-group">
             <label for="origem" class="control-label">Destino</label>
             <select
@@ -35,33 +37,34 @@
             ></select>
           </div>
         </div>
-        <div class="col-xs-12 col-md-4">
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-3">
           <button
             ng-click="confirmarOrigemDestino($event)"
             ng-hide="model.backup.hostOrigem && model.backup.hostDestino"
             loader
             loader-icon="fa-spinner"
-            class="btn btn-md btn-primary without-label">
+            class="btn btn-md btn-primary btn-block">
             <span class="fa fa-plus"></span> Adicionar pastas
           </button>
         </div>
       </div>
       <div ng-show="model.backup.hostOrigem && model.backup.hostDestino">
         <div class="row">
-          <div class="col-xs-12 col-md-8">
+          <div class="col-xs-12 col-md-9">
+            <h5 class="block-header--inner">Arquivos e diretórios</h5>
             <div class="form-group">
-              <label for="" class="control-label">
-                Diretórios e arquivos
-              </label>
               <div class="input-group m-b">
                 <input
                   type="text"
                   class="form-control"
+                  ng-disabled="running"
                   ng-model="model.item">
                 <div class="input-group-btn">
                   <button
                     ng-click="addItem()"
-                    class="btn btn-primary">
+                    class="btn btn-success">
                     <span class="fa fa-plus"></span>
                   </button>
                 </div>
@@ -72,11 +75,12 @@
         <div
           ng-repeat="item in model.backup.itens track by $index"
           class="row">
-          <div class="col-xs-12 col-md-8">
+          <div class="col-xs-12 col-md-9">
             <div class="input-group m-b">
               <input
                 type="text"
                 class="form-control"
+                ng-disabled="running"
                 ng-model="model.backup.itens[$index]">
               <div class="input-group-btn">
                 <button
@@ -90,49 +94,226 @@
         </div>
       </div>
       <div
-        ng-show="model.backup.hostOrigem && model.backup.hostDestino"
+        ng-show="model.backup.hostOrigem && model.backup.hostDestino && !agendando"
         class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12 col-md-3">
           <button
             ng-click="cancelarBackup()"
-            class="btn btn-primary">
+            ng-disabled="running"
+            class="btn btn-danger btn-block">
             <span class="fa fa-ban"></span> Cancelar
           </button>
+        </div>
+        <div class="col-xs-12 col-md-3">
           <button
             ng-show="model.backup.itens.length"
             ng-click="executarBackup($event)"
             loader
             loader-icon="fa-spinner"
-            class="btn btn-danger">
+            class="btn btn-success btn-block">
             <span class="fa fa-bolt"></span> Executar backup
           </button>
         </div>
+        <div class="col-xs-12 col-md-3">
+          <button
+            ng-show="model.backup.itens.length"
+            ng-click="iniciarAgendamento()"
+            loader
+            loader-icon="fa-spinner"
+            class="btn btn-info btn-block">
+            <span class="fa fa-clock-o"></span> Agendar backup
+          </button>
+        </div>
+      </div>
+      <div ng-show="agendando">
+        <div class="row">
+          <div class="col-xs-12 col-md-9">
+            <h5 class="block-header--inner">Agendamento</h5>
+            <div class="row">
+              <div class="col-xs-12 col-md-4">
+                <div class="form-group">
+                  <label for="agenda-hora">Hora</label>
+                  <select
+                    class="form-control"
+                    ng-model="model.agendar.hora"
+                    ng-options="h for h in model.horas"
+                    name="" id="agenda-hora">
+                  </select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-4">
+                <div class="form-group">
+                  <label for="agenda-minuto">Minuto</label>
+                  <select
+                    class="form-control"
+                    ng-model="model.agendar.minuto"
+                    ng-options="h for h in model.minutos"
+                    name="" id="agenda-minuto">
+                  </select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-4">
+                <div class="form-group">
+                  <label for="agenda-dia">Dia</label>
+                  <select
+                    class="form-control"
+                    ng-model="model.agendar.dia"
+                    ng-options="d for d in model.dias"
+                    name="" id="agenda-dia">
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-6">
+                <div class="form-group">
+                  <label for="agenda-mes">Mês</label>
+                  <select
+                    class="form-control"
+                    ng-model="model.agendar.meses"
+                    ng-options="m.value as m.name for m in model.meses"
+                    name="" id="agenda-mes">
+                  </select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-6">
+                <div class="form-group">
+                  <label for="agenda-dia-semana">Dia da semana</label>
+                  <select
+                    class="form-control"
+                    ng-model="model.agendar.diaDaSemana"
+                    ng-options="s.value as s.name for s in model.diasDaSemana"
+                    name="" id="agenda-dia-semana">
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-4">
+                <button
+                  ng-click="cancelarAgendamento()"
+                  ng-disabled="running"
+                  class="btn btn-danger btn-block">
+                  <span class="fa fa-ban"></span> Cancelar
+                </button>
+              </div>
+              <div class="col-xs-12 col-md-4">
+                <button
+                  ng-show="model.backup.itens.length"
+                  ng-click="agendarBackup($event)"
+                  loader
+                  loader-icon="fa-spinner"
+                  class="btn btn-success btn-block">
+                  <span class="fa fa-clock-o"></span> Agendar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </form>
-    <hr>
-    <h4>Backups realizados</h4>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Origem</th>
-          <th>Destino</th>
-          <th>Data e hora</th>
-          <th>Arquivo</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="backup in model.backups track by $index">
-          <td>{{backup.ipOrigem}}</td>
-          <td>{{backup.ipDestino}}</td>
-          <td>{{backup.dataExecucao | date:'dd/MM/yyyy HH:mm:ss'}}</td>
-          <td>{{backup.arquivoGerado}}</td>
-        </tr>
-        <tr ng-hide="model.backups.length">
-          <td colspan="4">
-            <div class="alert alert-info -m-b">Nenhum backup realizado.</div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+
+    <div class="block">
+      <h4 class="block-header">
+        <span class="fa fa-clock-o"></span> Backups agendados
+      </h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Origem</th>
+            <th>Destino</th>
+            <th>Itens</th>
+            <th>Agendamento</th>
+            <th>Opções</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>192.168.0.15</td>
+            <td>192.168.0.15</td>
+            <td>
+              /home/guilherme<br>
+              /arquivos
+            </td>
+            <td>
+              Quartas, 12h
+            </td>
+            <td>
+              <button
+                title="Cancelar agendamento"
+                class="btn btn-sm btn-danger">
+                <span class="fa fa-ban fa-fw"></span>
+              </button>
+              <button
+                title="Executar agora"
+                class="btn btn-sm btn-primary">
+                <span class="fa fa-bolt fa-fw"></span>
+              </button>
+              <button
+                title="Editar configurações"
+                class="btn btn-sm btn-info">
+                <span class="fa fa-cog fa-fw"></span>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>192.168.0.15</td>
+            <td>192.168.0.15</td>
+            <td>
+              /home/guilherme<br>
+              /arquivos
+            </td>
+            <td>
+              Quartas, 12h
+            </td>
+            <td>
+              <button
+                title="Cancelar agendamento"
+                class="btn btn-sm btn-danger">
+                <span class="fa fa-ban fa-fw"></span>
+              </button>
+              <button
+                title="Executar agora"
+                class="btn btn-sm btn-primary">
+                <span class="fa fa-bolt fa-fw"></span>
+              </button>
+              <button
+                title="Editar configurações"
+                class="btn btn-sm btn-info">
+                <span class="fa fa-cog fa-fw"></span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="block">
+      <h4 class="block-header">
+        <span class="fa fa-list"></span> Backups realizados
+      </h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Origem</th>
+            <th>Destino</th>
+            <th>Data e hora</th>
+            <th>Arquivo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="backup in model.backups track by $index">
+            <td>{{backup.ipOrigem}}</td>
+            <td>{{backup.ipDestino}}</td>
+            <td>{{backup.dataExecucao | date:'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td>{{backup.arquivoGerado}}</td>
+          </tr>
+          <tr ng-hide="model.backups.length">
+            <td colspan="4">
+              <div class="alert alert-info -m-b">Nenhum backup realizado.</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

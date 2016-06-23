@@ -18,8 +18,43 @@ angular.module('webappApp')
       $scope.model.ipDestino = null;
       $scope.model.item = null;
       $scope.resetModelBackup();
+      $scope.resetModelAgendar();
       $scope.model.backups = [];
+      $scope.model.agendamentos = [];
       $scope.running = false;
+      $scope.agendando = false;
+
+      Backups.getListaBackups(function(error, data) {
+        if (!error) {
+          $scope.model.backups = data;
+        }
+      });
+
+      Backups.getDropHoras(function(error, data) {
+        if (!error) {
+          $scope.model.horas = data;
+        }
+      });
+      Backups.getDropMinutos(function(error, data) {
+        if (!error) {
+          $scope.model.minutos = data;
+        }
+      });
+      Backups.getDropDias(function(error, data) {
+        if (!error) {
+          $scope.model.dias = data;
+        }
+      });
+      Backups.getDropDiasDaSemana(function(error, data) {
+        if (!error) {
+          $scope.model.diasDaSemana = data;
+        }
+      });
+      Backups.getDropMeses(function(error, data) {
+        if (!error) {
+          $scope.model.meses = data;
+        }
+      });
     };
     $scope.resetModelBackup = function() {
       if (!$scope.model) { $scope.model = {}; }
@@ -27,8 +62,18 @@ angular.module('webappApp')
         hostOrigem: '',
         hostDestino: '',
         itens: []
-      }
-    }
+      };
+    };
+    $scope.resetModelAgendar = function() {
+      if (!$scope.model) { $scope.model = {}; }
+      $scope.model.agendar = {
+        diaDaSemana: [],
+        diaDoMes: [],
+        hora: [],
+        minuto:[],
+        nome: ''
+      };
+    };
     $scope.confirmarOrigemDestino = function($event) {
       $event.delegateTarget.toggleLoading();
       $scope.running = true;
@@ -117,6 +162,18 @@ angular.module('webappApp')
     };
     $scope.cancelarBackup = function() {
       $scope.resetModelBackup();
-    }
+    };
+
+    $scope.iniciarAgendamento = function() {
+      $scope.agendando = true;
+      $scope.resetModelAgendar();
+    };
+    $scope.agendarBackup = function($event) {
+
+    };
+    $scope.cancelarAgendamento = function() {
+      $scope.agendando = false;
+      $scope.resetModelAgendar();
+    };
     $scope.init();
   });

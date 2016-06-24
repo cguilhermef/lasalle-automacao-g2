@@ -55,7 +55,4 @@ angular
   }]).run(function($rootScope, $locale) {
     $locale.NUMBER_FORMATS.CURRENCY_SYM = 'R$ ';
     $locale.DATETIME_FORMATS.shortDate = 'dd/MM/yyyy';
-    // $rootScope.config = {
-    //   SCRIPTS_URL: 'http://192.168.43.214:3000/script'
-    // };
   });

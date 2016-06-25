@@ -5,6 +5,9 @@ var bodyParser = require('body-parser');
 
 var app = express();
 
+var path = '/www/g2/';
+var scripts = path + 'sh/scripts/';
+
 app.use(express.static('dist'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -13,18 +16,13 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-var availableCommands = [
-  'show_top',
-  'ls_root',
-  'accessibleHost'
-];
 
 var result = {};
 var params = '';
 var output = null;
 //Executa scripts que retornam apenas 1 para sucesso ou 0 para erro
 app.post('/script', function(req, res) {
- 
+
   //transforma o array de parâmetros em uma string separada por espaços
   //compatível com a passagem de parâmetros para o shellscript
   if (req.body.params) {
@@ -33,7 +31,7 @@ app.post('/script', function(req, res) {
     params = '';
   }
   //executa o respectivo comando no servidor da aplicação
-  shelljs.exec('sh/scripts/'+req.body.command+'.sh '+params, function(code) {
+  shelljs.exec(scripts + req.body.command + '.sh ' + params, function(code) {
     //se a saída do .sh for 126 ou 127, retorna um objeto indicando erro.
     if (code === 126 || code === 127){
       result = {exitCode:code};
@@ -50,8 +48,8 @@ app.post('/script', function(req, res) {
 //envia o pacote de scripts a serem utilizados no host
 
 app.get('/package-cli', function(req, res) {
-	
-	shelljs.exec('sh/package-cli.sh', function(code){
+
+	shelljs.exec(path + 'sh/package-cli.sh', function(code){
 		if (code === 0) {
 			res.sendFile('/www/g2/sh/package-cli.tar');
 		} else {
@@ -61,6 +59,6 @@ app.get('/package-cli', function(req, res) {
 });
 
 //executa .sh que realizam operações e retornam a saída preparada do console
-app.listen(3000, function() {
-  console.log('ta rolando!');
+app.listen(3001, function() {
+  console.log('Wux rodando!');
 });

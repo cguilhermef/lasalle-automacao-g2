@@ -1,7 +1,6 @@
 #!/bin/bash
 
 path=/www/g2/sh/scripts/backup/
-targetPath=/www/g2/backups/
 script=${path}agendarBackup
 
 
@@ -33,7 +32,7 @@ else
 	ipDestino=$8
 
 	itens=`echo $* | cut -d\  -f9-`
-  crontab > ${script}.tmp
+  crontab -l > ${script}.tmp
   echo "$minuto $hora $dia $mes $diaSemana ${path}executarBackup.sh $ipOrigem $ipDestino $itens $identificacao" >> ${script}.tmp
 	crontab ${script}.tmp
 

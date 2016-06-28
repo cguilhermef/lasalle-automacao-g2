@@ -11,7 +11,7 @@ angular.module('webappApp')
   .factory('Config', function () {
     return {
       getScriptURL: function() {
-        return 'http://192.168.43.214:3000/script';
+        return 'http://10.0.0.107:3001/script';
       }
     };
   });

@@ -1,1 +1,2 @@
-* * * * * /www/g2/sh/scripts/backup/executarBackup.sh 192.168.0.15 192.168.0.15 /home/guilherme/teste.txt #pararemovernofuturo
+5 * * 3 3 /www/g2/sh/scripts/backup/executarBackup.sh 192.168.0.15 192.168.0.15 /home/guilherme #tessteste
+* * 4 * 4 /www/g2/sh/scripts/backup/executarBackup.sh 192.168.0.15 192.168.0.15 /home/guilherme #teste2

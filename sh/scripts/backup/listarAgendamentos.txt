@@ -1,0 +1,34 @@
+
+	{
+		"exitCode":0,
+		"content":
+			{
+				"agendamentos": [ 
+{
+						"identificacao": "tessteste",
+						"minuto":"5",
+						"hora":"A",
+						"dia":"A",
+						"mes":"3",
+						"diaDaSemana":"3",
+						"backup": {
+							"ipOrigem":"192.168.0.15",
+							"ipDestino":"192.168.0.15",
+							"itens":[
+"/home/guilherme"
+]}}
+,
+{
+						"identificacao": "teste2",
+						"minuto":"A",
+						"hora":"A",
+						"dia":"4",
+						"mes":"A",
+						"diaDaSemana":"4",
+						"backup": {
+							"ipOrigem":"192.168.0.15",
+							"ipDestino":"192.168.0.15",
+							"itens":[
+"/home/guilherme"
+]}}
+]}}

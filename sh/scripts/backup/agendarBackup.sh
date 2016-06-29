@@ -21,7 +21,7 @@ else
     rm ${script}.tmp
   fi
 
-  identificacao='#'${1}
+	identificacao=$1
 	minuto=`echo $2 | sed 's/A/\*/'`
 	hora=`echo $3 | sed 's/A/\*/'`
 	dia=`echo $4 | sed 's/A/\*/'`
@@ -30,14 +30,14 @@ else
 
 	ipOrigem=$7
 	ipDestino=$8
-
 	itens=`echo $* | cut -d\  -f9-`
+
   crontab -l > ${script}.tmp
-  echo "$minuto $hora $dia $mes $diaSemana ${path}executarBackup.sh $ipOrigem $ipDestino $itens $identificacao" >> ${script}.tmp
+  echo "$minuto $hora $dia $mes $diaSemana ${path}executarBackup.sh $ipOrigem $ipDestino $itens #${identificacao}" >> ${script}.tmp
 	crontab ${script}.tmp
 
 
-  echo -e "{\"exitCode\":0,\"content\":{\"message\":\"Chegou aqui.\"}}" >> ${script}.txt
+  echo -e "{\"exitCode\":0,\"content\":{\"message\":\"Agendado com sucesso!\"}}" >> ${script}.txt
   rm ${script}.lock
   exit
 fi

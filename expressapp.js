@@ -33,6 +33,7 @@ app.post('/script', function(req, res) {
   //executa o respectivo comando no servidor da aplicação
   shelljs.exec(scripts + req.body.command + '.sh ' + params, function(code) {
     //se a saída do .sh for 126 ou 127, retorna um objeto indicando erro.
+
     if (code === 126 || code === 127){
       result = {exitCode:code};
     } else {

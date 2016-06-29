@@ -1,0 +1,5 @@
+root
+postgres
+guilherme
+testando
+wux

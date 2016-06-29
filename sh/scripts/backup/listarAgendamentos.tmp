@@ -1,0 +1,2 @@
+5 A A 3 3 /www/g2/sh/scripts/backup/executarBackup.sh 192.168.0.15 192.168.0.15 /home/guilherme #tessteste
+A A 4 A 4 /www/g2/sh/scripts/backup/executarBackup.sh 192.168.0.15 192.168.0.15 /home/guilherme #teste2

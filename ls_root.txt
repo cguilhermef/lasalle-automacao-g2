@@ -1,4 +1,0 @@
-bashes
-expressapp.js
-ls_root.txt
-show_root.txt

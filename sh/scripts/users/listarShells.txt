@@ -1,0 +1,13 @@
+
+	{
+		"exitCode":0,
+		"content":{
+			"shells":[
+"/bin/sh"
+,
+"/bin/dash"
+,
+"/bin/bash"
+,
+"/bin/rbash"
+]}}

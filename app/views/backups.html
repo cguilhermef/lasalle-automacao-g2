@@ -4,7 +4,7 @@
     <h2 class="panel-title">Backups</h2>
   </div>
   <div class="panel-body">
-    <form name="novoBackup" class="block">
+    <form name="novoBackup" class="block" novalidate>
       <h4 class="block-header">
         <span class="fa fa-plus"></span> Novo backup
       </h4>
@@ -133,6 +133,7 @@
                 <div class="form-group">
                   <label for="">Identificação</label>
                   <input
+                    class="form-control"
                     ng-model="model.agendamento.identificacao"
                     ng-required="true"
                     type="text">
@@ -237,7 +238,7 @@
             <th>Opções</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody ng-if="model.agendamentos.length">
           <tr ng-repeat="agendamento in model.agendamentos track by $index">
             <td>{{ agendamento.backup.ipOrigem }}</td>
             <td>{{ agendamento.backup.ipDestino }}</td>
@@ -279,17 +280,24 @@
                 class="btn btn-sm btn-primary">
                 <span class="fa fa-bolt fa-fw"></span>
               </button>
-              <button
+              <!-- <button
                 ng-click="editarAgendamento($index, agendamento.identificacao)"
                 loader
                 loader-icon="fa-spinner"
                 title="Editar configurações"
                 class="btn btn-sm btn-info">
                 <span class="fa fa-cog fa-fw"></span>
-              </button>
+              </button> -->
             </td>
           </tr>
         </tbody>
+        <tfoot ng-if="!model.agendamentos.length">
+          <tr>
+            <td colspan="5">
+              <div class="alert alert-info -m-b">Nenhum backup agendado.</div>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
     <div class="block">

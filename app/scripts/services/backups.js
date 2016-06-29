@@ -21,7 +21,6 @@ angular.module('webappApp')
         callback(error);
       });
     };
-// /www/g2/sh/scripts/backup/teste.sh
     this.executarBackup = function(ipOrigem, ipDestino, itens, callback) {
       var params = [ipOrigem, ipDestino].concat(itens);
 
@@ -83,10 +82,10 @@ angular.module('webappApp')
       var tmp = _.range(2,32);
       var head = [
         { value: 'A', name: 'Todos os dias' },
-        { value: 1, name: 'todo dia 1º' }
+        { value: "1", name: 'todo dia 1º' }
       ];
       var tail = _.map(tmp, function(n) {
-        return { value: n, name: 'todo dia ' + n };
+        return { value: n.toString(), name: 'todo dia ' + n };
       });
       var response = head.concat(tail);
       if (callback) {
@@ -156,21 +155,21 @@ angular.module('webappApp')
         callback(error);
       });
     };
-    this.humanizeDiaSemana = function(num, callback) {
+    this.humanizeDiaSemana = function(num) {
       var diasDaSemana = service.getDropDiasDaSemana();
       return _.chain(diasDaSemana)
         .filter({value:num})
         .head()
         .value().name;
     };
-    this.humanizeMes = function(num, callback) {
+    this.humanizeMes = function(num) {
       var mes = service.getDropMeses();
       return _.chain(mes)
         .filter({value:num})
         .head()
         .value().name;
     };
-    this.humanizeDia = function(num, callback) {
+    this.humanizeDia = function(num) {
       var dia = service.getDropDias();
       return _.chain(dia)
         .filter({value:num})

@@ -33,12 +33,12 @@ angular.module('webappApp')
       Backups.getListaAgendamentos(function(error, data) {
         if (!error) {
           $scope.model.agendamentos = _.cloneDeep(data.content.agendamentos);
-          _.each($scope.model.agendamentos, function(a, k) {
+          _.each($scope.model.agendamentos, function(a) {
             a.humanize = {
               diaDaSemana: Backups.humanizeDiaSemana(a.diaDaSemana),
               mes: Backups.humanizeMes(a.mes),
               dia: Backups.humanizeDia(a.dia)
-            }
+            };
           });
         }
       });
@@ -199,17 +199,19 @@ angular.module('webappApp')
         agendamento.dia.toString() + ' ' +
         agendamento.mes.toString() + ' ' +
         agendamento.diaDaSemana.toString();
-      Backups.agendarBackup(cronConfig, backup, agendamento.identificacao, function(error, data) {
+      Backups.agendarBackup(cronConfig, backup, agendamento.identificacao, function(error) {
         if (!error) {
           ngToast.dismiss();
           ngToast.create({
             className: 'success',
             content: '<span class="fa fa-check fa-2x v-align-m"></span> Agendamento registrado com sucesso!',
-          })
+          });
           $scope.model.agendamentos.push({
             backup: backup,
             agendamento: cronConfig
           });
+          $scope.resetModelAgendar();
+          $scope.resetModelBackup();
         }
       });
     };
@@ -219,8 +221,8 @@ angular.module('webappApp')
     };
     $scope.removerAgendamento = function($event, agendamento) {
       $event.delegateTarget.toggleLoading();
-      var ok = confirm("Deseja realmente cancelar este agendamento?");
-      console.log(agendamento);
+      var ok = window.confirm('Deseja realmente cancelar este agendamento?');
+      $scope.model.agendamentos = _.omit($scope.model.agendamentos, {identificacao: agendamento.identificacao});
       if (ok) {
         ngToast.dismiss();
         ngToast.create({
@@ -233,8 +235,8 @@ angular.module('webappApp')
           console.log(error, data);
           ngToast.dismiss();
           $event.delegateTarget.toggleLoading();
-        })
+        });
       }
-    }
+    };
     $scope.init();
   });

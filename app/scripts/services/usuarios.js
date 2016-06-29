@@ -8,15 +8,40 @@
  * Service in the webappApp.
  */
 angular.module('webappApp')
-  .service('Usuarios', function (moment) {
-    // AngularJS will instantiate a singleton by calling "new" on this function
-    console.log(moment([2010, 1, 14, 15, 25, 39]));
-    this.getUsuario = function(ip, user) {
-      console.log(ip, user);
-      // $http.get('http://ubututres:3000/command=getUsuario&ip='+ip+'&user='+user, function(error, data){
-      //   if(!error) {
-      //     callback(null, data);
-      //   }
-      // })
+  .service('Usuarios', function ($http, Config) {
+
+    var service = this;
+
+    service.getUsuarios = function(ip, callback) {
+      $http.post(Config.getScriptURL(), {
+        command: 'users/listarUsuarios',
+        params: [ip]
+      }).then(function(response){
+        callback(null, response.data);
+      }, function(error) {
+        callback(error);
+      });
+    };
+
+    service.addUsuario = function(data, callback) {
+      $http.post(Config.getScriptURL(), {
+        command: 'users/cadastrarUsuario',
+        params: [data.ipHost, data.nome, data.senha, '/bin/bash']
+      }).then(function(response){
+        callback(null, response.data);
+      }, function(error) {
+        callback(error);
+      });
+    };
+
+    service.getShells = function(ip, callback) {
+      $http.post(Config.getScriptURL(), {
+        command: 'users/listarShells',
+        params: [ip]
+      }).then(function(response){
+        callback(null, response.data);
+      }, function(error) {
+        callback(error);
+      });
     };
   });

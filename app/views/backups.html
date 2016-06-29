@@ -4,7 +4,7 @@
     <h2 class="panel-title">Backups</h2>
   </div>
   <div class="panel-body">
-    <form name="novoBackup" class="block">
+    <form name="novoBackup" class="block" novalidate>
       <h4 class="block-header">
         <span class="fa fa-plus"></span> Novo backup
       </h4>
@@ -19,7 +19,6 @@
               id="origem"
               name="hostOrigem"
               ng-disabled="running || model.backup.hostOrigem"
-              ng-required="true"
               ng-model="model.ipOrigem"
               ng-options="h.ip as h.ip for h in model.hosts"
             ></select>
@@ -130,36 +129,59 @@
           <div class="col-xs-12 col-md-9">
             <h5 class="block-header--inner">Agendamento</h5>
             <div class="row">
-              <div class="col-xs-12 col-md-4">
+              <div class="col-xs-4">
+                <div class="form-group">
+                  <label for="">Identificação</label>
+                  <input
+                    class="form-control"
+                    ng-model="model.agendamento.identificacao"
+                    ng-required="true"
+                    type="text">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-3">
                 <div class="form-group">
                   <label for="agenda-hora">Hora</label>
                   <select
                     class="form-control"
-                    ng-model="model.agendar.hora"
-                    ng-options="h for h in model.horas"
+                    ng-model="model.agendamento.hora"
+                    ng-options="h.value as h.name for h in model.horas"
                     name="" id="agenda-hora">
                   </select>
                 </div>
               </div>
-              <div class="col-xs-12 col-md-4">
+              <div class="col-xs-12 col-md-3">
                 <div class="form-group">
                   <label for="agenda-minuto">Minuto</label>
                   <select
                     class="form-control"
-                    ng-model="model.agendar.minuto"
-                    ng-options="h for h in model.minutos"
+                    ng-model="model.agendamento.minuto"
+                    ng-options="h.value as h.name for h in model.minutos"
                     name="" id="agenda-minuto">
                   </select>
                 </div>
               </div>
-              <div class="col-xs-12 col-md-4">
+              <div class="col-xs-12 col-md-3">
                 <div class="form-group">
                   <label for="agenda-dia">Dia</label>
                   <select
                     class="form-control"
-                    ng-model="model.agendar.dia"
-                    ng-options="d for d in model.dias"
+                    ng-model="model.agendamento.dia"
+                    ng-options="d.value as d.name for d in model.dias"
                     name="" id="agenda-dia">
+                  </select>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-3">
+                <div class="form-group">
+                  <label for="agenda-mes">Mês</label>
+                  <select
+                    class="form-control"
+                    ng-model="model.agendamento.mes"
+                    ng-options="m.value as m.name for m in model.meses"
+                    name="" id="agenda-mes">
                   </select>
                 </div>
               </div>
@@ -167,21 +189,10 @@
             <div class="row">
               <div class="col-xs-12 col-md-6">
                 <div class="form-group">
-                  <label for="agenda-mes">Mês</label>
-                  <select
-                    class="form-control"
-                    ng-model="model.agendar.meses"
-                    ng-options="m.value as m.name for m in model.meses"
-                    name="" id="agenda-mes">
-                  </select>
-                </div>
-              </div>
-              <div class="col-xs-12 col-md-6">
-                <div class="form-group">
                   <label for="agenda-dia-semana">Dia da semana</label>
                   <select
                     class="form-control"
-                    ng-model="model.agendar.diaDaSemana"
+                    ng-model="model.agendamento.diaDaSemana"
                     ng-options="s.value as s.name for s in model.diasDaSemana"
                     name="" id="agenda-dia-semana">
                   </select>
@@ -227,64 +238,66 @@
             <th>Opções</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>192.168.0.15</td>
-            <td>192.168.0.15</td>
+        <tbody ng-if="model.agendamentos.length">
+          <tr ng-repeat="agendamento in model.agendamentos track by $index">
+            <td>{{ agendamento.backup.ipOrigem }}</td>
+            <td>{{ agendamento.backup.ipDestino }}</td>
             <td>
-              /home/guilherme<br>
-              /arquivos
+              <span ng-repeat="item in agendamento.backup.itens track by $index">
+                {{ item }} <br>
+              </span>
             </td>
             <td>
-              Quartas, 12h
+              <span class="fa fa-clock-o"></span> {{ agendamento.hora }}h{{ agendamento.minuto }}min
+              <br>
+              <span class="fa fa-calendar d-ib v-align-t"></span>
+              <span class="d-ib v-align-t">
+                <span
+                  class="fwb"
+                  ng-show="agendamento.dia !== 'A'">Dia(s)</span>
+                {{ agendamento.humanize.dia }} <br>
+                <span
+                  class="fwb"
+                  ng-show="agendamento.mes !== 'A'">Mês(es)</span>
+                {{ agendamento.humanize.mes}} <br>
+                {{ agendamento.humanize.diaDaSemana }}
+              </span>
             </td>
             <td>
               <button
+                ng-click="removerAgendamento($event, agendamento.identificacao)"
+                loader
+                loader-icon="fa-spinner"
                 title="Cancelar agendamento"
                 class="btn btn-sm btn-danger">
                 <span class="fa fa-ban fa-fw"></span>
               </button>
               <button
+                ng-click="executarAgora($event, agendamento.identificacao)"
+                loader
+                loader-icon="fa-spinner"
                 title="Executar agora"
                 class="btn btn-sm btn-primary">
                 <span class="fa fa-bolt fa-fw"></span>
               </button>
-              <button
+              <!-- <button
+                ng-click="editarAgendamento($index, agendamento.identificacao)"
+                loader
+                loader-icon="fa-spinner"
                 title="Editar configurações"
                 class="btn btn-sm btn-info">
                 <span class="fa fa-cog fa-fw"></span>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>192.168.0.15</td>
-            <td>192.168.0.15</td>
-            <td>
-              /home/guilherme<br>
-              /arquivos
-            </td>
-            <td>
-              Quartas, 12h
-            </td>
-            <td>
-              <button
-                title="Cancelar agendamento"
-                class="btn btn-sm btn-danger">
-                <span class="fa fa-ban fa-fw"></span>
-              </button>
-              <button
-                title="Executar agora"
-                class="btn btn-sm btn-primary">
-                <span class="fa fa-bolt fa-fw"></span>
-              </button>
-              <button
-                title="Editar configurações"
-                class="btn btn-sm btn-info">
-                <span class="fa fa-cog fa-fw"></span>
-              </button>
+              </button> -->
             </td>
           </tr>
         </tbody>
+        <tfoot ng-if="!model.agendamentos.length">
+          <tr>
+            <td colspan="5">
+              <div class="alert alert-info -m-b">Nenhum backup agendado.</div>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
     <div class="block">

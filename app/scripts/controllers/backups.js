@@ -30,6 +30,19 @@ angular.module('webappApp')
         }
       });
 
+      Backups.getListaAgendamentos(function(error, data) {
+        if (!error) {
+          $scope.model.agendamentos = _.cloneDeep(data.content.agendamentos);
+          _.each($scope.model.agendamentos, function(a) {
+            a.humanize = {
+              diaDaSemana: Backups.humanizeDiaSemana(a.diaDaSemana),
+              mes: Backups.humanizeMes(a.mes),
+              dia: Backups.humanizeDia(a.dia)
+            };
+          });
+        }
+      });
+
       Backups.getDropHoras(function(error, data) {
         if (!error) {
           $scope.model.horas = data;
@@ -66,12 +79,12 @@ angular.module('webappApp')
     };
     $scope.resetModelAgendar = function() {
       if (!$scope.model) { $scope.model = {}; }
-      $scope.model.agendar = {
-        diaDaSemana: [],
-        diaDoMes: [],
-        hora: [],
-        minuto:[],
-        nome: ''
+      $scope.model.agendamento = {
+        diaDaSemana: '',
+        mes: '',
+        hora: '',
+        minuto: '',
+        identificacao: ''
       };
     };
     $scope.confirmarOrigemDestino = function($event) {
@@ -155,7 +168,6 @@ angular.module('webappApp')
       }
       $scope.model.backup.itens.push(_.clone($scope.model.item));
       $scope.model.item = null;
-      console.log($scope.model.backup);
     };
     $scope.removeItem = function(item) {
       $scope.model.backup.itens = _.without($scope.model.backup.itens, item);
@@ -168,12 +180,63 @@ angular.module('webappApp')
       $scope.agendando = true;
       $scope.resetModelAgendar();
     };
-    $scope.agendarBackup = function($event) {
-
+    $scope.agendarBackup = function() {
+      if ($scope.novoBackup.$invalid) {
+        return;
+      }
+      ngToast.dismiss();
+      ngToast.create({
+        className: 'warning',
+        content: '<span class="fa fa-clock-o fa-2x v-align-m pulsing"></span> Registrando agendamento...',
+        dismissOnTimeout: false,
+        dismissOnClick: false
+      });
+      var agendamento = _.cloneDeep($scope.model.agendamento);
+      var backup = _.cloneDeep($scope.model.backup);
+      var cronConfig = ''+
+        agendamento.minuto.toString() + ' ' +
+        agendamento.hora.toString() + ' ' +
+        agendamento.dia.toString() + ' ' +
+        agendamento.mes.toString() + ' ' +
+        agendamento.diaDaSemana.toString();
+      Backups.agendarBackup(cronConfig, backup, agendamento.identificacao, function(error) {
+        if (!error) {
+          ngToast.dismiss();
+          ngToast.create({
+            className: 'success',
+            content: '<span class="fa fa-check fa-2x v-align-m"></span> Agendamento registrado com sucesso!',
+          });
+          $scope.model.agendamentos.push({
+            backup: backup,
+            agendamento: cronConfig
+          });
+          $scope.resetModelAgendar();
+          $scope.resetModelBackup();
+        }
+      });
     };
     $scope.cancelarAgendamento = function() {
       $scope.agendando = false;
       $scope.resetModelAgendar();
+    };
+    $scope.removerAgendamento = function($event, agendamento) {
+      $event.delegateTarget.toggleLoading();
+      var ok = window.confirm('Deseja realmente cancelar este agendamento?');
+      $scope.model.agendamentos = _.omit($scope.model.agendamentos, {identificacao: agendamento.identificacao});
+      if (ok) {
+        ngToast.dismiss();
+        ngToast.create({
+          className: 'warning',
+          content: '<span class="fa fa-clock-o fa-2x v-align-m pulsing"></span> Removendo o agendamento...',
+          dismissOnTimeout: false,
+          dismissOnClick: false
+        });
+        Backups.removerAgendamento(agendamento, function(error, data) {
+          console.log(error, data);
+          ngToast.dismiss();
+          $event.delegateTarget.toggleLoading();
+        });
+      }
     };
     $scope.init();
   });

@@ -3,65 +3,138 @@
     <h2 class="panel-title">Usuários</h2>
   </div>
   <div class="panel-body">
-    <form name="frmUsuarioFind">
-      <div class="row">
-        <div class="col-xs-12 col-md-4">
-          <div class="form-group">
-            <label for="" class="form-control-label">IP do servidor</label>
-            <!-- <input type="text" ng-model="filtro.ipServidor" class="form-control"> -->
-            <select
-              name=""
-              ng-options="h.ip for h in hosts"
-              ng-model="filtro.ipServidor" id="" class="form-control">
-            </select>
+    <div class="block">
+      <h4 class="block-header">
+        <span class="fa fa-plus"></span> Novo usuário
+      </h4>
+      <form name="frmUsuarioAdd" novalidate>
+        <div class="row">
+          <div class="col-xs-12 col-md-3">
+            <div class="form-group">
+              <label for="" class="form-control-label">Host</label>
+              <!-- <input type="text" ng-model="filtro.ipServidor" class="form-control"> -->
+              <select
+                name="ipHost"
+                ng-required="true"
+                ng-disabled="running || editing"
+                ng-change="refreshShells()"
+                ng-options="h.ip as h.ip for h in model.hosts"
+                ng-model="model.edit.ipHost" id="" class="form-control">
+              </select>
+            </div>
+          </div>
+          <div class="col-xs-12 col-md-3">
+            <div class="form-group">
+              <label for="" class="form-control-label">Nome do usuario</label>
+              <input
+                type="text"
+                ng-required="true"
+                ng-model="model.edit.nome"
+                ng-disabled="running"
+                class="form-control">
+            </div>
+          </div>
+          <div class="col-xs-12 col-md-3">
+            <div class="form-group">
+              <label for="" class="form-control-label">Senha</label>
+              <input
+                type="password"
+                ng-required="true"
+                ng-model="model.edit.senha"
+                ng-disabled="running"
+                class="form-control">
+            </div>
+          </div>
+          <div class="col-xs-12 col-md-3">
+            <div class="form-group">
+              <label for="" class="form-control-label">Shell</label>
+              <select
+                ng-model="edit.shell"
+                ng-disabled="running"
+                ng-options="s as s for s in shells"
+                class="form-control"></select>
+            </div>
           </div>
         </div>
-        <div class="col-xs-12 col-md-4">
-          <div class="form-group">
-            <label for="" class="form-control-label">Nome do usuario</label>
-            <input type="text" ng-model="filtro.nomeUsuario" class="form-control">
-          </div>
-        </div>
-        <div class="col-xs-12 col-md-4">
-          <label for=""></label>
-          <button
-            style="margin-top: 24px;"
-            ng-click="buscarUsuario()"
-            class="btn btn-primary">
-            Buscar
-          </button>
-        </div>
-      </div>
-    </form>
-    <hr>
-    <h4>Usuários</h4>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Pasta <i>home</i></th>
-          <th>Último acesso</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="user in model.users track by $index">
-          <td>{{host.ip}}</td>
-          <td>{{host.lost | number}}%</td>
-          <td>{{host.latency}}</td>
-          <td>
+        <div class="row">
+          <div class="col-xs-12 col-md-3">
             <button
-              class="btn btn-sm btn-danger">
-              <span class="fa fa-remove"></span>
+              loader
+              loader-icon="fa-spinner"
+              ng-disabled="running"
+              ng-click="adicionarUsuario($event)"
+              class="btn btn-primary btn-block">
+              <span class="fa fa-plus"></span> Adicionar
             </button>
-          </td>
-        </tr>
-        <tr ng-hide="model.users.length">
-          <td colspan="4">
-            <div class="alert alert-info -m-b">Nenhum usuário para ser listado.</div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="block">
+      <h4 class="block-header">
+        <span class="fa fa-search"></span> Buscar usuários
+      </h4>
+      <form name="frmUsuarioFind" novalidate>
+        <div class="row">
+          <div class="col-xs-12 col-md-4">
+            <div class="form-group">
+              <label for="" class="form-control-label">Host</label>
+              <!-- <input type="text" ng-model="filtro.ipServidor" class="form-control"> -->
+              <select
+                name="ipHost"
+                ng-required="true"
+                ng-disabled="running"
+                ng-options="h.ip as h.ip for h in model.hosts"
+                ng-model="filtro.ipHost"
+                id=""
+                class="form-control">
+              </select>
+            </div>
+          </div>
+          <div class="col-xs-12 col-md-4">
+            <button
+              loader
+              loader-icon="fa-spinner"
+              ng-click="buscarUsuario($event)"
+              class="btn btn-primary without-label">
+              Buscar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="block">
+      <h4 class="block-header">
+        <span class="fa fa-list"></span> Usuários
+      </h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Pasta <i>home</i></th>
+            <th>Último acesso</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in model.users track by $index">
+            <td>{{user.name}}</td>
+            <td></td>
+            <td></td>
+            <td>
+              <button
+                class="btn btn-sm btn-danger">
+                <span class="fa fa-remove"></span>
+              </button>
+            </td>
+          </tr>
+          <tr ng-hide="model.users.length">
+            <td colspan="4">
+              <div class="alert alert-info -m-b">Nenhum usuário para ser listado.</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

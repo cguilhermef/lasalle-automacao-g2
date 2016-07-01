@@ -44,6 +44,8 @@ else
     latencia=null
     perda=null
   fi
+	
+	ssh -o StrictHostKeyChecking=no wux@$1 "ls /www/g2/ >> /dev/null"
 
   echo -e "{\"exitCode\":0, \"content\":{\"ip\":\"$1\", \"perda\":$perda, \"latencia\":$latencia,\"ativo\":$ativo }}" >> ${script}.txt  
  

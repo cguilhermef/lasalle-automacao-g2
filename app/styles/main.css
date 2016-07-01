@@ -2,6 +2,10 @@
   margin-top: 24px;
 }
 
+.fa-spinner:before {
+    content: "\f110";
+}
+
 .fwb {
   font-weight: 600;
 }

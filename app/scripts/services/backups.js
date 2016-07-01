@@ -82,7 +82,7 @@ angular.module('webappApp')
       var tmp = _.range(2,32);
       var head = [
         { value: 'A', name: 'Todos os dias' },
-        { value: "1", name: 'todo dia 1º' }
+        { value: '1', name: 'todo dia 1º' }
       ];
       var tail = _.map(tmp, function(n) {
         return { value: n.toString(), name: 'todo dia ' + n };

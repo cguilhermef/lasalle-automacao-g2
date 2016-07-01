@@ -1,0 +1,5 @@
+postgres:/var/lib/postgresql:/bin/bash
+guilherme:/home/guilherme:/bin/bash
+byshellweb:/home/byshellweb:/bin/bash
+byshellweb2:/home/byshellweb2:/bin/bash
+huiaB:/home/huiaB:/bin/bash

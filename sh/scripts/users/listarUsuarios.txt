@@ -3,11 +3,15 @@
 		"exitCode":0,
 		"content":{
 			"usuarios":[
-"root"
+{
+										"name": "guilherme",
+										"home": "/home/guilherme",
+										"shell": "/bin/bash"
+									 }
 ,
-"postgres"
-,
-"guilherme"
-,
-"wux"
+{
+										"name": "huiaB",
+										"home": "/home/huiaB",
+										"shell": "/bin/bash"
+									 }
 ]}}

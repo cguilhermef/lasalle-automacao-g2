@@ -59,6 +59,10 @@ app.get('/package-cli', function(req, res) {
 	});
 });
 
+app.get('/config', function(req, res){
+	res.json({'ipServer': '192.168.0.21' }).end();
+});
+
 //executa .sh que realizam operações e retornam a saída preparada do console
 app.listen(3001, function() {
   console.log('Wux rodando!');

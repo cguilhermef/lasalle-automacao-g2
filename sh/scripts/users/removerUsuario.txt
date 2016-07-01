@@ -1,0 +1,6 @@
+{
+							"exitCode":0,
+							"content":{
+								"message":"Usuário umnovoteste removido com sucesso."
+							}
+						}

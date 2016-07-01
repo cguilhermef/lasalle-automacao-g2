@@ -6,7 +6,7 @@
 				"message":"Backup realizado com sucesso!", 
 				"ipOrigem":"192.168.0.15",
 				"ipDestino":"192.168.0.15",
-				"arquivoGerado":"20160630204102.tar", 
-				"dataExecucao":"1467330064000"
+				"arquivoGerado":"20160630235902.tar", 
+				"dataExecucao":"1467341944000"
 			}
 	} 

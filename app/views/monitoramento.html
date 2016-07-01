@@ -146,9 +146,9 @@
                 <li
                   ng-repeat="log in model.monitoramentoIPs track by $index"
                   class="list-group-item">
-                  <strong ng-hide="log.status" class="fa fa-ban text-danger"></strong>
-                  <strong ng-show="log.status" class="fa fa-check text-success"></strong>
-                  {{ log.result }}
+                  <strong ng-hide="log.sucesso" class="fa fa-ban text-danger"></strong>
+                  <strong ng-show="log.sucesso" class="fa fa-check text-success"></strong>
+                  {{ log.host }}
                 </li>
               </ul>
             </div>
@@ -176,8 +176,8 @@
                 <li
                   ng-repeat="log in model.monitoramentoPortas track by $index"
                   class="list-group-item">
-                  <strong ng-hide="log.status === 'Sucesso'" class="fa fa-ban text-danger"></strong>
-                  <strong ng-show="log.status === 'Sucesso'" class="fa fa-check text-success"></strong>
+                  <strong ng-hide="log.sucesso" class="fa fa-ban text-danger"></strong>
+                  <strong ng-show="log.sucesso" class="fa fa-check text-success"></strong>
                   {{ log.host }} <span class="label label-primary">{{log.porta}}</span> {{ log.status }}
                 </li>
               </ul>
@@ -186,7 +186,26 @@
         </div>
       </div>
       <div id="logs" class="tab-pane">
-        go everywhere - logs
+        <div class="block extra-m-t">
+          <h4 class="block-header">
+            <span class="fa fa-dashboard"></span> Logs por host
+          </h4>
+          <br>
+          <div class="row">
+            <div class="col-xs-12 col-xs-3">
+              <div class="form-group">
+                <label>Hosts disponíveis</label>
+                <select
+                  ng-change="getLogs()"
+                  class="form-control"
+                  ng-model="model.host"
+                  ng-disabled="running"
+                  ng-options="h.ip as h.ip disable when added(h.ip) for h in model.hostsDisponiveis">
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

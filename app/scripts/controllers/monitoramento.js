@@ -180,13 +180,7 @@ angular.module('webappApp')
         $event.delegateTarget.toggleLoading();
         ngToast.dismiss();
         if (!error && data.exitCode === 0) {
-          $scope.model.monitoramentoIPs = _.map(data.content.log, function(v){
-            return {
-              result: v,
-              status: v.search(/Sucesso/) > -1
-            };
-          });
-
+          $scope.model.monitoramentoIPs = data.content.log;
           ngToast.create({
             className: 'success',
             content:'<span class="fa fa-check fa-2x v-align-m"></span> Rotina finalizada com sucesso!',
@@ -230,6 +224,12 @@ angular.module('webappApp')
           content:'<span class="fa fa-ban fa-2x v-align-m"></span> Ocorreu um erro',
           timeout: 4000
         });
+      });
+    };
+    $scope.getLogs = function() {
+      $scope.running = true;
+      Monitoramento.getLogs(function(error, data) {
+        console.log(data.content);
       });
     };
     $scope.init();

@@ -89,5 +89,14 @@ angular.module('webappApp')
         callback(error);
       });
     };
+    service.getLogs = function(callback) {
+      $http.post(URL_SCRIPTS, {
+        command: 'monitor/logCompleto'
+      }).then(function(response) {
+        callback(null, response.data);
+      }, function(error) {
+        callback(error);
+      });
+    };
 
   });

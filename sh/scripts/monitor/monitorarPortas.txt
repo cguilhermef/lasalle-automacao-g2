@@ -1,0 +1,123 @@
+{"exitCode":0,
+							"content": {
+								"log":[
+{
+														"host":"192.168.0.15",
+														"porta":"21",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.15",
+														"porta":"22",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.15",
+														"porta":"8080",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.15",
+														"porta":"443",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.15",
+														"porta":"3000",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.22",
+														"porta":"21",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.22",
+														"porta":"22",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.22",
+														"porta":"8080",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.22",
+														"porta":"443",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.22",
+														"porta":"3000",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.15",
+														"porta":"21",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.15",
+														"porta":"22",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.15",
+														"porta":"8080",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.15",
+														"porta":"443",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.15",
+														"porta":"3000",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.22",
+														"porta":"21",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.22",
+														"porta":"22",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.22",
+														"porta":"8080",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.22",
+														"porta":"443",
+														"status":"Insucesso"
+													 }
+,
+{
+														"host":"192.168.0.22",
+														"porta":"3000",
+														"status":"Insucesso"
+													 }
+]}}

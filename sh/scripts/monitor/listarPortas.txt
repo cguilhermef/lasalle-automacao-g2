@@ -1,14 +1,1 @@
-{
-						"exitCode": 0,
-						"content": {
-													"portas":[
-"21"
-,
-"22"
-,
-"8080"
-,
-"443"
-,
-"3000"
-]}}
+{"exitCode":500,"content":{"message":"Há um processo em andamento."}}

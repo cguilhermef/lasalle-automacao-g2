@@ -51,6 +51,10 @@
                 ng-class="{active: rota === '/backups' }">
                 <a ng-href="#/backups">Backups</a>
               </li>
+              <li
+                ng-class="{active: rota === '/monitoramento' }">
+                <a ng-href="#/monitoramento">Monitoramento</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -74,6 +78,10 @@
             <li
               ng-class="{active: rota === '/backups' }">
               <a ng-href="#/backups">Backups</a>
+            </li>
+            <li
+              ng-class="{active: rota === '/monitoramento' }">
+              <a ng-href="#/monitoramento">Monitoramento</a>
             </li>
           </ul>
         </div>
@@ -122,6 +130,8 @@
         <script src="scripts/services/moment.js"></script>
         <script src="scripts/controllers/backups.js"></script>
         <script src="scripts/services/backups.js"></script>
+        <script src="scripts/controllers/monitoramento.js"></script>
+        <script src="scripts/services/monitoramento.js"></script>
         <!-- endbuild -->
 </body>
 </html>

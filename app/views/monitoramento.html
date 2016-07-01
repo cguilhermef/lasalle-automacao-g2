@@ -5,20 +5,20 @@
   <div class="panel-body">
     <ul class="nav nav-tabs">
       <li class="active">
+        <a data-toggle="tab" data-target="#executar">Executar</a>
+      </li>
+      <li>
         <a data-toggle="tab" data-target="#hosts">Hosts</a>
       </li>
       <li>
         <a data-toggle="tab" data-target="#portas">Portas</a>
       </li>
       <li>
-        <a data-toggle="tab" data-target="#status">Status</a>
-      </li>
-      <li>
         <a data-toggle="tab" data-target="#logs">Logs</a>
       </li>
     </ul>
     <div class="tab-content">
-      <div id="hosts" class="tab-pane active">
+      <div id="hosts" class="tab-pane">
         <div class="block extra-m-t">
           <h4 class="block-header">
             <span class="fa fa-desktop"></span> Hosts a serem monitorados
@@ -117,8 +117,73 @@
           </div>
         </div>
       </div>
-      <div id="status" class="tab-pane">
-        go there - status
+      <div id="executar" class="tab-pane active">
+        <div class="block extra-m-t">
+          <h4 class="block-header">
+            <span class="fa fa-flash"></span> Executar monitoramento
+          </h4>
+          <br>
+          <div class="row">
+            <div class="col-xs-12 col-xs-3">
+              <button
+                loader
+                loader-icon="fa-spinner"
+                ng-click="monitorarIPs($event)"
+                class="btn btn-lg btn-success btn-block">
+                <span class="fa fa-binoculars"></span> Monitorar IPs
+              </button>
+            </div>
+          </div>
+          <hr>
+          <div
+            ng-show="model.monitoramentoIPs.length"
+            class="row">
+            <div class="col-xs-12">
+              <h5>
+                <span class="fa fa-dashboard"></span> Log do monitoramento
+              </h5>
+              <ul class="list-group">
+                <li
+                  ng-repeat="log in model.monitoramentoIPs track by $index"
+                  class="list-group-item">
+                  <strong ng-hide="log.status" class="fa fa-ban text-danger"></strong>
+                  <strong ng-show="log.status" class="fa fa-check text-success"></strong>
+                  {{ log.result }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-xs-3">
+              <button
+                loader
+                loader-icon="fa-spinner"
+                ng-click="monitorarPortas($event)"
+                class="btn btn-lg btn-success btn-block">
+                <span class="fa fa-binoculars"></span> Monitorar Portas
+              </button>
+            </div>
+          </div>
+          <hr>
+          <div
+            ng-show="model.monitoramentoPortas.length"
+            class="row">
+            <div class="col-xs-12">
+              <h5>
+                <span class="fa fa-dashboard"></span> Log do monitoramento
+              </h5>
+              <ul class="list-group">
+                <li
+                  ng-repeat="log in model.monitoramentoPortas track by $index"
+                  class="list-group-item">
+                  <strong ng-hide="log.status === 'Sucesso'" class="fa fa-ban text-danger"></strong>
+                  <strong ng-show="log.status === 'Sucesso'" class="fa fa-check text-success"></strong>
+                  {{ log.host }} <span class="label label-primary">{{log.porta}}</span> {{ log.status }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
       <div id="logs" class="tab-pane">
         go everywhere - logs

@@ -24,6 +24,8 @@ angular.module('webappApp')
           $scope.model.portasMonitoradas = data.content.portas;
         }
       });
+      $scope.model.monitoramentoIPs = [];
+      $scope.model.monitoramentoPortas = [];
 
     };
 
@@ -162,6 +164,73 @@ angular.module('webappApp')
     };
     $scope.added = function(host) {
       return _.includes($scope.model.hostsMonitorados, host);
+    };
+    $scope.monitorarIPs = function($event) {
+      $scope.running = true;
+      $event.delegateTarget.toggleLoading();
+      ngToast.dismiss();
+      ngToast.create({
+        className: 'warning',
+        content: '<span class="fa fa-clock-o fa-2x v-align-m pulsing"></span> Executando rotina...',
+        dismissOnTimeout: false,
+        dismissOnClick: false
+      });
+      Monitoramento.monitorarIPs(function(error, data) {
+        $scope.running = false;
+        $event.delegateTarget.toggleLoading();
+        ngToast.dismiss();
+        if (!error && data.exitCode === 0) {
+          $scope.model.monitoramentoIPs = _.map(data.content.log, function(v){
+            return {
+              result: v,
+              status: v.search(/Sucesso/) > -1
+            };
+          });
+
+          ngToast.create({
+            className: 'success',
+            content:'<span class="fa fa-check fa-2x v-align-m"></span> Rotina finalizada com sucesso!',
+            timeout: 4000
+          });
+          return;
+        }
+        ngToast.create({
+          className: 'danger',
+          content:'<span class="fa fa-ban fa-2x v-align-m"></span> Ocorreu um erro',
+          timeout: 4000
+        });
+      });
+    };
+    $scope.monitorarPortas = function($event) {
+      $scope.running = false;
+      $event.delegateTarget.toggleLoading();
+      ngToast.dismiss();
+      ngToast.create({
+        className: 'warning',
+        content: '<span class="fa fa-clock-o fa-2x v-align-m pulsing"></span> Executando rotina...',
+        dismissOnTimeout: false,
+        dismissOnClick: false
+      });
+      Monitoramento.monitorarPortas(function(error, data) {
+        $scope.running = true;
+        $event.delegateTarget.toggleLoading();
+        ngToast.dismiss();
+        if (!error && data.exitCode === 0) {
+          $scope.model.monitoramentoPortas = data.content.log;
+
+          ngToast.create({
+            className: 'success',
+            content:'<span class="fa fa-check fa-2x v-align-m"></span> Rotina finalizada com sucesso!',
+            timeout: 4000
+          });
+          return;
+        }
+        ngToast.create({
+          className: 'danger',
+          content:'<span class="fa fa-ban fa-2x v-align-m"></span> Ocorreu um erro',
+          timeout: 4000
+        });
+      });
     };
     $scope.init();
   });

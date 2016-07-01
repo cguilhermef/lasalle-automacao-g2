@@ -71,5 +71,23 @@ angular.module('webappApp')
         callback(error);
       });
     };
+    service.monitorarIPs = function(callback) {
+      $http.post(URL_SCRIPTS, {
+        command: 'monitor/monitorarIPs'
+      }).then(function(response) {
+        callback(null, response.data);
+      }, function(error) {
+        callback(error);
+      });
+    };
+    service.monitorarPortas = function(callback) {
+      $http.post(URL_SCRIPTS, {
+        command: 'monitor/monitorarPortas'
+      }).then(function(response) {
+        callback(null, response.data);
+      }, function(error) {
+        callback(error);
+      });
+    };
 
   });

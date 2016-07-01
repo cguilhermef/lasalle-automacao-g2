@@ -7,7 +7,7 @@ unset RESULT
 unset DATA
 
 #DATA=$(date +%d-%m-%Y)
-DATA=$(date '+%d%m%y_%H-%M')
+DATA=$(date '+%s'000)
 
 if [ -e ${script}.lock ]  # verifica se há um .lock para o script
 then                        #se houver, encerra com código
@@ -32,12 +32,12 @@ else
 
 			if [ $? -eq 0 ]
 			then
-				echo "$i Sucesso" >> ${path}logip_${DATA}.txt # Arquivo onde será gravado o retorno da consulta.
+				echo "$i true" >> ${path}logip_${DATA}.txt # Arquivo onde será gravado o retorno da consulta.
 			else
-				echo "$i Insucesso" >> ${path}logip_${DATA}.txt # Arquivo onde será gravado o retorno da consulta.
+				echo "$i false" >> ${path}logip_${DATA}.txt # Arquivo onde será gravado o retorno da consulta.
 			fi
 		done
-
+		
 		count=`cat ${path}logip_${DATA}.txt | wc -l`
 
 		echo -e "{\"exitCode\":0,
@@ -46,7 +46,11 @@ else
 					
 								cat ${path}logip_${DATA}.txt | while read line
 								do
-									echo -e "\"$line\"" >> ${script}.txt
+									echo -e "{
+														\"host\":\"`echo $line | awk '{ print $1 }'`\",
+														\"sucesso\":`echo $line | awk '{ print $2 }'`,
+														\"data\":`echo ${DATA}`
+													 }" >> ${script}.txt
 									count=$((count-1))
 									if [ $count -gt 0 ]
 									then

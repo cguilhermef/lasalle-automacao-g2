@@ -1,1 +1,8 @@
-{"exitCode":500,"content":{"message":"Há um processo em andamento."}}
+{
+						"exitCode": 0,
+						"content": {
+													"hosts":[
+"192.168.0.15"
+,
+"192.168.0.22"
+]}}

@@ -51,7 +51,10 @@ angular
       horizontalPosition: 'center',
       maxNumber: 3
     });
-  }]).run(function($rootScope, $locale) {
+  }]).run(function($rootScope, $locale, Config) {
     $locale.NUMBER_FORMATS.CURRENCY_SYM = 'R$ ';
     $locale.DATETIME_FORMATS.shortDate = 'dd/MM/yyyy';
+    Config.getScriptURL(function(error, data) {
+      console.log(error, data);
+    });
   });

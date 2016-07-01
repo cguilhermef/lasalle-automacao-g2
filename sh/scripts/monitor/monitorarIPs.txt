@@ -1,7 +1,15 @@
 {"exitCode":0,
 							"content": {
 								"log":[
-"192.168.0.15 Sucesso"
+{
+														"host":"192.168.0.15",
+														"sucesso":true,
+														"data":1467361593000
+													 }
 ,
-"192.168.0.22 Insucesso"
+{
+														"host":"192.168.0.22",
+														"sucesso":false,
+														"data":1467361593000
+													 }
 ]}}

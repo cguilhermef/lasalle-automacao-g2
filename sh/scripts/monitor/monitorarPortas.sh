@@ -10,8 +10,7 @@ unset IPENTRADA
 
 #IPENTRADA=$1
 #DATA=$(date +%d-%m-%Y)
-DATA=$(date '+%d%m%y_%H-%M')
-
+DATA=$(date '+%s'000)
 if [ -e ${script}.lock ]  # verifica se há um .lock para o script
 then                        #se houver, encerra com código
     
@@ -38,9 +37,9 @@ else                                           #se não houver
 
 			if [ $? -eq 0 ]
 			then
-				echo "$ip $i Sucesso" >> ${path}logporta_${DATA}.txt # Arquivo onde será gravado o retorno da consulta.
+				echo "$ip $i true" >> ${path}logporta_${DATA}.txt # Arquivo onde será gravado o retorno da consulta.
 			else
-				echo "$ip $i Insucesso" >> ${path}logporta_${DATA}.txt # Arquivo onde será gravado o retorno da consulta.
+				echo "$ip $i false" >> ${path}logporta_${DATA}.txt # Arquivo onde será gravado o retorno da consulta.
 			fi
 		done
 	done
@@ -56,7 +55,8 @@ else                                           #se não houver
 									echo -e "{
 														\"host\":\"`echo $line | awk '{ print $1 }'`\",
 														\"porta\":\"`echo $line | awk '{ print $2 }'`\",
-														\"status\":\"`echo $line | awk '{ print $3 }'`\"
+														\"sucesso\":`echo $line | awk '{ print $3 }'`,
+														\"data\":`echo ${DATA}`
 													 }" >> ${script}.txt
 									count=$((count-1))
 									if [ $count -gt 0 ]

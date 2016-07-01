@@ -23,7 +23,6 @@ angular.module('webappApp')
       $scope.model.agendamentos = [];
       $scope.running = false;
       $scope.agendando = false;
-
       Backups.getListaBackups(function(error, data) {
         if (!error) {
           $scope.model.backups = data;

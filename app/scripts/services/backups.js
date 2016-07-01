@@ -8,11 +8,12 @@
  * Service in the webappApp.
  */
 angular.module('webappApp')
-  .service('Backups', function ($http, Config, _) {
+  .service('Backups', function ($http, _, $rootScope) {
     var service = this;
+    var URL_SCRIPTS = $rootScope.config.URL_SCRIPTS;
 
     this.verificarOrigemDestino = function(ipOrigem, ipDestino, callback) {
-      $http.post(Config.getScriptURL(), {
+      $http.post(URL_SCRIPTS, {
         command: 'backup/verificarOrigemDestino',
         params: [ipOrigem, ipDestino]
       }).then(function(response){
@@ -24,7 +25,7 @@ angular.module('webappApp')
     this.executarBackup = function(ipOrigem, ipDestino, itens, callback) {
       var params = [ipOrigem, ipDestino].concat(itens);
 
-      $http.post(Config.getScriptURL(), {
+      $http.post(URL_SCRIPTS, {
         command: 'backup/executarBackup',
         params: params
       }).then(function(response) {
@@ -35,7 +36,7 @@ angular.module('webappApp')
     };
 
     this.getListaBackups = function(callback) {
-      $http.post(Config.getScriptURL(), {
+      $http.post(URL_SCRIPTS, {
         command: 'backup/listaBackups'
       }).then(function(response) {
         callback(null, response.data.content.backups);
@@ -135,7 +136,7 @@ angular.module('webappApp')
     };
 
     this.agendarBackup = function(agendamento, backup, identificacao, callback) {
-      $http.post(Config.getScriptURL(), {
+      $http.post(URL_SCRIPTS, {
         command: 'backup/agendarBackup',
         params: [identificacao, agendamento, backup.hostOrigem, backup.hostDestino, backup.itens]
       }).then(function(response) {
@@ -145,7 +146,7 @@ angular.module('webappApp')
       });
     };
     this.getListaAgendamentos = function(callback) {
-      $http.post(Config.getScriptURL(), {
+      $http.post(URL_SCRIPTS, {
         command: 'backup/listarAgendamentos',
         params: []
       }).then(function(response) {
@@ -177,7 +178,7 @@ angular.module('webappApp')
         .value().name;
     };
     this.removerAgendamento = function(agendamento, callback) {
-      $http.post(Config.getScriptURL(), {
+      $http.post(URL_SCRIPTS, {
         command: 'backup/removerAgendamento',
         params: [agendamento]
       }).then(function(response) {

@@ -8,11 +8,12 @@
  * Service in the webappApp.
  */
 angular.module('webappApp')
-  .service('Hosts', function (Config, $http, $localStorage, _) {
+  .service('Hosts', function ($http, $localStorage, _, $rootScope) {
     var service = this;
+    var URL_SCRIPTS = $rootScope.config.URL_SCRIPTS;
 
     this.statusIp = function(ipAddress, callback) {
-      $http.post(Config.getScriptURL(), {
+      $http.post(URL_SCRIPTS, {
         command: 'ipStatus',
         params: [ipAddress]
       }).then(function(response){

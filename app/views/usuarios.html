@@ -5,42 +5,146 @@
   <div class="panel-body">
     <div class="block">
       <h4 class="block-header">
-        <span class="fa fa-plus"></span> Novo usuário
+        <span class="fa fa-desktop"></span> Host
       </h4>
-      <form name="frmUsuarioAdd" novalidate>
+      <div class="row">
+        <div class="col-xs-12 col-md-3">
+          <div class="form-group">
+            <label class="form-label">Selecione</label>
+            <select
+              name="ipHost"
+              ng-required="true"
+              ng-disabled="running || editing"
+              ng-change="refresh()"
+              ng-options="h.ip as h.ip for h in model.hosts"
+              ng-model="model.ipHost" id="" class="form-control">
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      ng-show="model.ipHost"
+      class="block">
+      <h4 class="block-header">
+        <span class="fa fa-search"></span> Buscar usuários
+      </h4>
+      <form name="frmUsuarioFind" novalidate>
         <div class="row">
           <div class="col-xs-12 col-md-3">
             <div class="form-group">
-              <label for="" class="form-control-label">Host</label>
-              <!-- <input type="text" ng-model="filtro.ipServidor" class="form-control"> -->
-              <select
-                name="ipHost"
-                ng-required="true"
-                ng-disabled="running || editing"
-                ng-change="refreshShells()"
-                ng-options="h.ip as h.ip for h in model.hosts"
-                ng-model="model.edit.ipHost" id="" class="form-control">
-              </select>
+              <label for="" class="form-control-label">Usuário</label>
+              <input
+                type="text"
+                ng-disabled="running"
+                ng-model="model.find.name"
+                class="form-control">
             </div>
+            <small class="help-block">Deixe em branco para buscar todos</small>
           </div>
+          <div class="col-xs-12 col-md-3">
+            <button
+              loader
+              loader-icon="fa-spinner"
+              ng-click="buscarUsuario($event)"
+              class="btn btn-primary btn-block without-label">
+              <span class="fa fa-search"></span> Buscar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div ng-if="model.users.length" class="block">
+      <h4 class="block-header">
+        <span class="fa fa-list"></span> Usuários
+      </h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Pasta <i>home</i></th>
+            <th>Bash</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in model.users track by $index">
+            <td>{{ user.name }}</td>
+            <td>{{ user.home }}</td>
+            <td>{{ user.shell }}</td>
+            <td>
+              <button
+                loader
+                loader-icon="fa-spinner"
+                ng-disabled="running || editing"
+                ng-click="excluirUsuario($event, $index)"
+                class="btn btn-sm btn-danger">
+                <span class="fa fa-fw fa-remove"></span>
+              </button>
+              <button
+                ng-disabled="running || editing"
+                ng-click="editarUsuario($index)"
+                class="btn btn-sm btn-success">
+                <span class="fa fa-fw fa-edit"></span>
+              </button>
+            </td>
+          </tr>
+          <tr ng-hide="model.users.length">
+            <td colspan="4">
+              <div class="alert alert-info -m-b">Nenhum usuário para ser listado.</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div
+      ng-show="model.ipHost"
+      class="block">
+      <h4
+        ng-show="mode === 'adding'"
+        class="block-header">
+        <span class="fa fa-plus"></span> Novo usuário
+      </h4>
+      <h4
+        ng-show="mode === 'editing'"
+        class="block-header">
+        <span class="fa fa-edit"></span> Editando {{ $scope.edit.name }}
+      </h4>
+      <form name="frmUsuarioEdit" novalidate>
+        <div class="row">
           <div class="col-xs-12 col-md-3">
             <div class="form-group">
               <label for="" class="form-control-label">Nome do usuario</label>
               <input
                 type="text"
                 ng-required="true"
-                ng-model="model.edit.nome"
+                ng-model="model.edit.name"
                 ng-disabled="running"
                 class="form-control">
             </div>
           </div>
-          <div class="col-xs-12 col-md-3">
+          <div
+            ng-if="mode === 'editing'"
+            class="col-xs-12 col-md-6">
+            <div class="form-group">
+              <label for="" class="form-control-label">Diretório <i>/home</i></label>
+              <input
+                type="text"
+                ng-required="mode === 'editing'"
+                ng-model="model.edit.home"
+                ng-disabled="running"
+                class="form-control">
+            </div>
+          </div>
+          <div
+            ng-if="mode === 'adding'"
+            class="col-xs-12 col-md-3">
             <div class="form-group">
               <label for="" class="form-control-label">Senha</label>
               <input
                 type="password"
-                ng-required="true"
-                ng-model="model.edit.senha"
+                ng-required="mode === 'adding'"
+                ng-model="model.edit.password"
                 ng-disabled="running"
                 class="form-control">
             </div>
@@ -49,7 +153,7 @@
             <div class="form-group">
               <label for="" class="form-control-label">Shell</label>
               <select
-                ng-model="edit.shell"
+                ng-model="model.edit.shell"
                 ng-disabled="running"
                 ng-options="s as s for s in shells"
                 class="form-control"></select>
@@ -62,79 +166,32 @@
               loader
               loader-icon="fa-spinner"
               ng-disabled="running"
+              ng-if="mode == 'adding'"
               ng-click="adicionarUsuario($event)"
-              class="btn btn-primary btn-block">
+              class="btn btn-primary btn-block without-label">
               <span class="fa fa-plus"></span> Adicionar
             </button>
-          </div>
-        </div>
-      </form>
-    </div>
-    <div class="block">
-      <h4 class="block-header">
-        <span class="fa fa-search"></span> Buscar usuários
-      </h4>
-      <form name="frmUsuarioFind" novalidate>
-        <div class="row">
-          <div class="col-xs-12 col-md-4">
-            <div class="form-group">
-              <label for="" class="form-control-label">Host</label>
-              <!-- <input type="text" ng-model="filtro.ipServidor" class="form-control"> -->
-              <select
-                name="ipHost"
-                ng-required="true"
-                ng-disabled="running"
-                ng-options="h.ip as h.ip for h in model.hosts"
-                ng-model="filtro.ipHost"
-                id=""
-                class="form-control">
-              </select>
-            </div>
-          </div>
-          <div class="col-xs-12 col-md-4">
             <button
               loader
               loader-icon="fa-spinner"
-              ng-click="buscarUsuario($event)"
-              class="btn btn-primary without-label">
-              Buscar
+              ng-disabled="running"
+              ng-if="mode == 'editing'"
+              ng-click="salvarUsuario(model.edit, $event)"
+              class="btn btn-success btn-block without-label">
+              <span class="fa fa-save"></span> Salvar
+            </button>
+          </div>
+          <div class="col-xs-12 col-md-3">
+            <button
+              ng-disabled="running"
+              ng-if="mode == 'editing'"
+              ng-click="cancelarEdicao()"
+              class="btn btn-danger btn-block without-label">
+              <span class="fa fa-ban"></span> Cancelar
             </button>
           </div>
         </div>
       </form>
-    </div>
-    <div class="block">
-      <h4 class="block-header">
-        <span class="fa fa-list"></span> Usuários
-      </h4>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Pasta <i>home</i></th>
-            <th>Último acesso</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="user in model.users track by $index">
-            <td>{{user.name}}</td>
-            <td></td>
-            <td></td>
-            <td>
-              <button
-                class="btn btn-sm btn-danger">
-                <span class="fa fa-remove"></span>
-              </button>
-            </td>
-          </tr>
-          <tr ng-hide="model.users.length">
-            <td colspan="4">
-              <div class="alert alert-info -m-b">Nenhum usuário para ser listado.</div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </div>

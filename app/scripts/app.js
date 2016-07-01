@@ -55,6 +55,10 @@ angular
     $locale.NUMBER_FORMATS.CURRENCY_SYM = 'R$ ';
     $locale.DATETIME_FORMATS.shortDate = 'dd/MM/yyyy';
     Config.getScriptURL(function(error, data) {
-      console.log(error, data);
+      if (!error) {
+        $rootScope.config = {
+          URL_SCRIPTS: data
+        };
+      }
     });
   });

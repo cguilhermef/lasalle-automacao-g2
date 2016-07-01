@@ -8,14 +8,15 @@
  * Service in the webappApp.
  */
 angular.module('webappApp')
-  .service('Usuarios', function ($http, Config) {
+  .service('Usuarios', function ($http, $rootScope) {
 
     var service = this;
+    var URL_SCRIPTS = $rootScope.config.URL_SCRIPTS;
 
-    service.getUsuarios = function(ip, callback) {
-      $http.post(Config.getScriptURL(), {
+    service.getUsuarios = function(ip, criterio, callback) {
+      $http.post(URL_SCRIPTS, {
         command: 'users/listarUsuarios',
-        params: [ip]
+        params: criterio.length ? [ip, criterio] : [ip]
       }).then(function(response){
         callback(null, response.data);
       }, function(error) {
@@ -23,10 +24,10 @@ angular.module('webappApp')
       });
     };
 
-    service.addUsuario = function(data, callback) {
-      $http.post(Config.getScriptURL(), {
+    service.addUsuario = function(host, data, callback) {
+      $http.post(URL_SCRIPTS, {
         command: 'users/cadastrarUsuario',
-        params: [data.ipHost, data.nome, data.senha, '/bin/bash']
+        params: [host, data.name, data.password, data.shell]
       }).then(function(response){
         callback(null, response.data);
       }, function(error) {
@@ -35,9 +36,39 @@ angular.module('webappApp')
     };
 
     service.getShells = function(ip, callback) {
-      $http.post(Config.getScriptURL(), {
+      $http.post(URL_SCRIPTS, {
         command: 'users/listarShells',
         params: [ip]
+      }).then(function(response){
+        callback(null, response.data);
+      }, function(error) {
+        callback(error);
+      });
+    };
+
+    service.delUsuario = function(ip, name, callback) {
+      $http.post(URL_SCRIPTS, {
+        command: 'users/removerUsuario',
+        params: [ip, name]
+      }).then(function(response){
+        callback(null, response.data);
+      }, function(error) {
+        callback(error);
+      });
+    };
+
+    service.editUsuario = function(
+      ipHost,
+      oldName,
+      oldHome,
+      newName,
+      newHome,
+      newShell,
+      callback
+    ){
+      $http.post(URL_SCRIPTS, {
+        command: 'users/editarUsuario',
+        params: [ipHost, oldName, oldHome, newName, newHome, newShell]
       }).then(function(response){
         callback(null, response.data);
       }, function(error) {

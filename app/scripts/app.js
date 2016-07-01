@@ -41,6 +41,11 @@ angular
         controller: 'BackupsCtrl',
         controllerAs: 'ctrl'
       })
+      .when('/monitoramento', {
+        templateUrl: 'views/monitoramento.html',
+        controller: 'MonitoramentoCtrl',
+        controllerAs: 'monitoramento'
+      })
       .otherwise({
         redirectTo: '/'
       });

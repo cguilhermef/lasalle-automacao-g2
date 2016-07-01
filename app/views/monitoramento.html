@@ -1,0 +1,128 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Monitoramento</h2>
+  </div>
+  <div class="panel-body">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a data-toggle="tab" data-target="#hosts">Hosts</a>
+      </li>
+      <li>
+        <a data-toggle="tab" data-target="#portas">Portas</a>
+      </li>
+      <li>
+        <a data-toggle="tab" data-target="#status">Status</a>
+      </li>
+      <li>
+        <a data-toggle="tab" data-target="#logs">Logs</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div id="hosts" class="tab-pane active">
+        <div class="block extra-m-t">
+          <h4 class="block-header">
+            <span class="fa fa-desktop"></span> Hosts a serem monitorados
+          </h4>
+          <br>
+          <div class="row">
+            <div class="col-xs-12 col-md-4">
+              <div class="form-group">
+                <label>Hosts disponíveis</label>
+                <select
+                  class="form-control"
+                  ng-model="model.host"
+                  ng-options="h.ip as h.ip disable when added(h.ip) for h in model.hostsDisponiveis">
+                </select>
+              </div>
+              <button
+                loader
+                loader-icon="fa-spinner"
+                ng-click="addHost($event)"
+                class="btn btn-primary without-label">
+                <span class="fa fa-plus"></span> Adicionar
+              </button>
+            </div>
+            <div class="col-xs-12 col-md-6 col-md-offset-2">
+              <label>Host monitorados</label>
+              <ul class="list-group">
+                <li
+                  ng-repeat="host in model.hostsMonitorados track by $index"
+                  class="list-group-item">
+                    {{ host }}
+                    <button
+                      loader
+                      loader-icon="fa-spinner"
+                      ng-click="delHost($event, host)"
+                      class="btn btn-xs btn-danger pull-right">
+                      <span class="fa fa-remove"></span>
+                    </button>
+                  </li>
+                <li
+                  ng-hide="model.hostsMonitorados.length"
+                  class="list-group-item text-center">
+                    Nenhum host adicionado.
+                  </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="portas" class="tab-pane">
+        <div class="block extra-m-t">
+          <h4 class="block-header">
+            <span class="fa fa-gear"></span> Portas a serem monitoradas
+          </h4>
+          <br>
+          <div class="row">
+            <div class="col-xs-12 col-md-4">
+              <div class="form-group">
+                <label>
+                  Porta
+                </label>
+                <input
+                  ng-model="model.porta"
+                  type="text"
+                  class="form-control">
+              </div>
+              <button
+                loader
+                loader-icon="fa-spinner"
+                ng-click="addPorta($event)"
+                class="btn btn-primary without-label">
+                <span class="fa fa-plus"></span> Adicionar
+              </button>
+            </div>
+            <div class="col-xs-12 col-md-6 col-md-offset-2">
+              <label>Portas monitoradas</label>
+              <ul class="list-group">
+                <li
+                  ng-repeat="porta in model.portasMonitoradas track by $index"
+                  class="list-group-item">
+                    {{ porta }}
+                    <button
+                      loader
+                      loader-icon="fa-spinner"
+                      ng-click="delPorta($event, porta)"
+                      class="btn btn-xs btn-danger pull-right">
+                      <span class="fa fa-remove"></span>
+                    </button>
+                  </li>
+                <li
+                  ng-hide="model.portasMonitoradas.length"
+                  class="list-group-item text-center">
+                    Nenhuma porta adicionada.
+                  </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="status" class="tab-pane">
+        go there - status
+      </div>
+      <div id="logs" class="tab-pane">
+        go everywhere - logs
+      </div>
+    </div>
+  </div>
+</div>
